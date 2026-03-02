@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Tareas - Nota Central</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="contenedor-de-notas">
+
+  <header>
+    <h1>Lista de Tareas</h1>
+  </header>
+
+  <aside>
+    <h2>Categorías</h2>
+    <ul>
+      <li>Trabajo</li>
+      <li>Estudio</li>
+      <li>Personal</li>
+    </ul>
+  </aside>
+
+  <main>
+    <section class="task-list">
+
+            <div class="task high">
+        <input type="checkbox" id="tarea1">
+        <label for="tarea1" class="task-content">
+            <span class="col title">Cocinar</span>
+            <span class="col category">Hogar</span>
+            <span class="col priority">Alta</span>
+        </label>
+        </div>
+
+      <div class="task medium">
+        <input type="checkbox" id="tarea2">
+        <label for="tarea2" class="task-content">
+          <span class="title">Proyecto</span>
+          <span class="category">Trabajo</span>
+          <span class="priority">Media</span>
+        </label>
+      </div>
+
+      <div class="task low">
+        <input type="checkbox" id="tarea3">
+        <label for="tarea3" class="task-content">
+          <span class="title">Ir al gimnasio</span>
+          <span class="category">Personal</span>
+          <span class="priority">Baja</span>
+        </label>
+      </div>
+
+    </section>
+  </main>
+
+</div>
+
+</body>
+</html>

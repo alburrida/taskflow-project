@@ -1,0 +1,161 @@
+/* VARIABLES */
+:root {
+  --color-bg: #f0f2f5;
+  --color-note: #fff8dc;
+  --color-header: #4f46e5;
+
+  --priority-high: #ef4444;
+  --priority-medium: #f59e0b;
+  --priority-low: #10b981;
+
+  --spacing: 16px;
+  --radius: 12px;
+
+  font-family: Arial, sans-serif;
+}
+
+/* FONDO */
+body {
+  margin: 0;
+  background: var(--color-bg);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh;
+}
+
+/* NOTA CENTRAL */
+.contenedor-de-notas {
+  background: var(--color-note);
+  padding: 24px;
+  border-radius: var(--radius);
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+  width: 90%;
+  max-width: 650px;
+}
+
+/* HEADER */
+header {
+  text-align: center;
+  background: var(--color-header);
+  color: white;
+
+  padding: var(--spacing);
+  border-radius: var(--radius);
+
+  margin-bottom: var(--spacing);
+}
+
+/* ASIDE */
+aside ul {
+  list-style: none;
+  padding: 0;
+}
+
+aside li {
+  display: none;
+}
+
+aside h2 {
+  display: none;
+}
+
+/* LISTA DE TAREAS */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* TARJETA TAREA */
+.task {
+  display: flex;
+  align-items: center;
+
+  background: white;
+
+  padding: var(--spacing);
+  border-radius: var(--radius);
+
+  /* transición para hover y cambios de fondo */
+  transition: transform 0.2s ease,
+              box-shadow 0.2s ease,
+              background 0.3s ease;
+}
+
+.task:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* CHECKBOX */
+.task input[type="checkbox"] {
+  margin-right: 12px;
+}
+
+/* CONTENIDO TAREA */
+.task-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  /* transición suave para cambios de estado */
+  transition: opacity 0.3s ease, color 0.3s ease, background 0.3s ease;
+}
+
+/* COLUMNAS */
+.title {
+  flex: 2;
+}
+
+.category {
+  flex: 1;
+  text-align: center;
+
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.priority {
+  flex: 1;
+  text-align: right;
+
+  padding: 4px 8px;
+  border-radius: 6px;
+
+  color: white;
+  font-size: 12px;
+}
+
+/* PRIORIDADES */
+.high .priority { background: var(--priority-high); }
+.medium .priority { background: var(--priority-medium); }
+.low .priority { background: var(--priority-low); }
+
+/* TAREA COMPLETADA */
+.task input[type="checkbox"]:checked + .task-content {
+  text-decoration: line-through;
+  opacity: 0.6;
+  color: #555; /* color más suave al marcar */
+  background: #f5f5f5; /* fondo ligeramente gris */
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .task-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .title,
+  .category,
+  .priority {
+    flex: unset;
+    text-align: left;
+  }
+}
