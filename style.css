@@ -8,6 +8,11 @@
   --priority-medium: #f59e0b;
   --priority-low: #10b981;
 
+  --filtro-all: #e5e7eb;
+  --filtro-trabajo: #4f46e5;
+  --filtro-hogar: #ef4444;
+  --filtro-personal: #10b981;
+
   --spacing: 16px;
   --radius: 12px;
 
@@ -18,11 +23,9 @@
 body {
   margin: 0;
   background: var(--color-bg);
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   min-height: 100vh;
 }
 
@@ -31,9 +34,7 @@ body {
   background: var(--color-note);
   padding: 24px;
   border-radius: var(--radius);
-
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-
   width: 90%;
   max-width: 650px;
 }
@@ -43,25 +44,66 @@ header {
   text-align: center;
   background: var(--color-header);
   color: white;
-
   padding: var(--spacing);
   border-radius: var(--radius);
-
   margin-bottom: var(--spacing);
 }
 
 /* ASIDE */
+aside {
+  margin-bottom: var(--spacing);
+  text-align: center;
+}
+
 aside ul {
   list-style: none;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
 aside li {
-  display: none;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: transform 0.2s ease, opacity 0.2s ease,
+              filter 0.3s ease, box-shadow 0.3s ease;
 }
 
-aside h2 {
-  display: none;
+aside li:hover {
+  transform: scale(1.08);
+  opacity: 0.85;
+}
+
+/* COLORES POR CATEGORÍA */
+.filtro-all {
+  background: var(--filtro-all);
+  color: #333;
+}
+
+.filtro-trabajo {
+  background: var(--filtro-trabajo);
+  color: white;
+}
+
+.filtro-hogar {
+  background: var(--filtro-hogar);
+  color: white;
+}
+
+.filtro-personal {
+  background: var(--filtro-personal);
+  color: white;
+}
+
+/* BOTÓN ACTIVO */
+aside li.active {
+  filter: brightness(0.6);
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.3);
+  transform: scale(1.05);
 }
 
 /* LISTA DE TAREAS */
@@ -75,13 +117,9 @@ aside h2 {
 .task {
   display: flex;
   align-items: center;
-
   background: white;
-
   padding: var(--spacing);
   border-radius: var(--radius);
-
-  /* transición para hover y cambios de fondo */
   transition: transform 0.2s ease,
               box-shadow 0.2s ease,
               background 0.3s ease;
@@ -102,8 +140,6 @@ aside h2 {
   display: flex;
   align-items: center;
   width: 100%;
-
-  /* transición suave para cambios de estado */
   transition: opacity 0.3s ease, color 0.3s ease, background 0.3s ease;
 }
 
@@ -115,7 +151,6 @@ aside h2 {
 .category {
   flex: 1;
   text-align: center;
-
   font-size: 13px;
   opacity: 0.8;
 }
@@ -123,10 +158,8 @@ aside h2 {
 .priority {
   flex: 1;
   text-align: right;
-
   padding: 4px 8px;
   border-radius: 6px;
-
   color: white;
   font-size: 12px;
 }
@@ -140,8 +173,8 @@ aside h2 {
 .task input[type="checkbox"]:checked + .task-content {
   text-decoration: line-through;
   opacity: 0.6;
-  color: #555; /* color más suave al marcar */
-  background: #f5f5f5; /* fondo ligeramente gris */
+  color: #555;
+  background: #f5f5f5;
 }
 
 /* RESPONSIVE */
@@ -157,5 +190,9 @@ aside h2 {
   .priority {
     flex: unset;
     text-align: left;
+  }
+
+  aside ul {
+    flex-direction: column;
   }
 }

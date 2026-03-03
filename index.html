@@ -17,25 +17,26 @@
   <aside>
     <h2>Categorías</h2>
     <ul>
-      <li>Trabajo</li>
-      <li>Estudio</li>
-      <li>Personal</li>
+      <li data-filter="all" class="filtro-all active">Todas</li>
+      <li data-filter="trabajo" class="filtro-trabajo">Trabajo</li>
+      <li data-filter="hogar" class="filtro-hogar">Hogar</li>
+      <li data-filter="personal" class="filtro-personal">Personal</li>
     </ul>
   </aside>
 
   <main>
     <section class="task-list">
 
-            <div class="task high">
+      <div class="task high" data-category="hogar">
         <input type="checkbox" id="tarea1">
         <label for="tarea1" class="task-content">
-            <span class="col title">Cocinar</span>
-            <span class="col category">Hogar</span>
-            <span class="col priority">Alta</span>
+            <span class="title">Cocinar</span>
+            <span class="category">Hogar</span>
+            <span class="priority">Alta</span>
         </label>
-        </div>
+      </div>
 
-      <div class="task medium">
+      <div class="task medium" data-category="trabajo">
         <input type="checkbox" id="tarea2">
         <label for="tarea2" class="task-content">
           <span class="title">Proyecto</span>
@@ -44,7 +45,7 @@
         </label>
       </div>
 
-      <div class="task low">
+      <div class="task low" data-category="personal">
         <input type="checkbox" id="tarea3">
         <label for="tarea3" class="task-content">
           <span class="title">Ir al gimnasio</span>
@@ -53,10 +54,54 @@
         </label>
       </div>
 
+      <div class="task high" data-category="trabajo">
+        <input type="checkbox" id="tarea4">
+        <label for="tarea4" class="task-content">
+          <span class="title">Preparar presentación</span>
+          <span class="category">Trabajo</span>
+          <span class="priority">Alta</span>
+        </label>
+      </div>
+
+      <div class="task medium" data-category="hogar">
+        <input type="checkbox" id="tarea5">
+        <label for="tarea5" class="task-content">
+          <span class="title">Hacer la compra semanal</span>
+          <span class="category">Hogar</span>
+          <span class="priority">Media</span>
+        </label>
+      </div>
+
     </section>
   </main>
 
 </div>
+
+<script>
+  const filtros = document.querySelectorAll("aside li");
+  const tareas = document.querySelectorAll(".task");
+
+  filtros.forEach(filtro => {
+    filtro.addEventListener("click", () => {
+      const categoria = filtro.dataset.filter;
+
+      // Quitar clase active de todos
+      filtros.forEach(btn => btn.classList.remove("active"));
+
+      // Añadir active al botón clicado
+      filtro.classList.add("active");
+
+      // Filtrar tareas
+      tareas.forEach(tarea => {
+        if (categoria === "all" || tarea.dataset.category === categoria) {
+          tarea.style.display = "flex";
+        } else {
+          tarea.style.display = "none";
+        }
+      });
+    });
+  });
+</script>
 
 </body>
 </html>
