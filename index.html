@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lista de Tareas - Nota Central</title>
 <link rel="stylesheet" href="style.css">
+
+<!--
+            _   _
+           (.)_(.)
+        _ (   _   ) _
+       / \/`-----'\/ \
+     __\ ( (     ) ) /__
+     )   /\ \._./ /\   (
+      )_/ /|\   /|\ \_(
+-->
+
 </head>
 <body>
 
@@ -15,14 +26,16 @@
   </header>
 
   <aside>
+  <div class="category-box">
     <h2>Categorías</h2>
     <ul>
-      <li data-filter="all" class="filtro-all active">Todas</li>
+      <li data-filter="all" class="filtro-all">Todas</li>
       <li data-filter="trabajo" class="filtro-trabajo">Trabajo</li>
       <li data-filter="hogar" class="filtro-hogar">Hogar</li>
       <li data-filter="personal" class="filtro-personal">Personal</li>
     </ul>
-  </aside>
+  </div>
+</aside>
 
   <main>
     <section class="task-list">
@@ -78,29 +91,36 @@
 </div>
 
 <script>
-  const filtros = document.querySelectorAll("aside li");
-  const tareas = document.querySelectorAll(".task");
+const filtros = document.querySelectorAll("aside li");
+const tareas = document.querySelectorAll(".task");
 
-  filtros.forEach(filtro => {
-    filtro.addEventListener("click", () => {
-      const categoria = filtro.dataset.filter;
+filtros.forEach(filtro => {
+  filtro.addEventListener("click", () => {
+    const categoria = filtro.dataset.filter;
 
-      // Quitar clase active de todos
-      filtros.forEach(btn => btn.classList.remove("active"));
+    // Si el botón ya estaba activo, lo desactivamos
+    if (filtro.classList.contains("active")) {
+      filtro.classList.remove("active");
+      // Mostrar todas las tareas
+      tareas.forEach(tarea => tarea.style.display = "flex");
+      return; // salimos del click
+    }
 
-      // Añadir active al botón clicado
-      filtro.classList.add("active");
+    // Si no estaba activo, desactivar todos
+    filtros.forEach(btn => btn.classList.remove("active"));
+    // Activar el botón clicado
+    filtro.classList.add("active");
 
-      // Filtrar tareas
-      tareas.forEach(tarea => {
-        if (categoria === "all" || tarea.dataset.category === categoria) {
-          tarea.style.display = "flex";
-        } else {
-          tarea.style.display = "none";
-        }
-      });
+    // Filtrar tareas
+    tareas.forEach(tarea => {
+      if (categoria === "all" || tarea.dataset.category === categoria) {
+        tarea.style.display = "flex";
+      } else {
+        tarea.style.display = "none";
+      }
     });
   });
+});
 </script>
 
 </body>

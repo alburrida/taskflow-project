@@ -78,26 +78,27 @@ aside li:hover {
   opacity: 0.85;
 }
 
+/* Cajita de categorías */
+.category-box {
+  background: #ffffffcc; /* blanco semitransparente, o usa var(--color-note) */
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: inline-block; /* se ajusta al contenido */
+  margin-bottom: var(--spacing);
+
+  .category-box {
+    margin: 0 auto var(--spacing); /* margen superior automático, abajo spacing */
+    text-align: center;
+  }
+
+}
+
 /* COLORES POR CATEGORÍA */
-.filtro-all {
-  background: var(--filtro-all);
-  color: #333;
-}
-
-.filtro-trabajo {
-  background: var(--filtro-trabajo);
-  color: white;
-}
-
-.filtro-hogar {
-  background: var(--filtro-hogar);
-  color: white;
-}
-
-.filtro-personal {
-  background: var(--filtro-personal);
-  color: white;
-}
+.filtro-all { background: var(--filtro-all); color: #333; }
+.filtro-trabajo { background: var(--filtro-trabajo); color: white; }
+.filtro-hogar { background: var(--filtro-hogar); color: white; }
+.filtro-personal { background: var(--filtro-personal); color: white; }
 
 /* BOTÓN ACTIVO */
 aside li.active {
@@ -120,9 +121,11 @@ aside li.active {
   background: white;
   padding: var(--spacing);
   border-radius: var(--radius);
+  position: relative;
   transition: transform 0.2s ease,
               box-shadow 0.2s ease,
               background 0.3s ease;
+  cursor: pointer; /* toda la tarjeta clicable */
 }
 
 .task:hover {
@@ -130,39 +133,29 @@ aside li.active {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* CHECKBOX */
+/* CHECKBOX OCULTO */
 .task input[type="checkbox"] {
-  margin-right: 12px;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-/* CONTENIDO TAREA */
+/* CONTENIDO TAREA - TODO CLICABLE */
 .task-content {
   display: flex;
   align-items: center;
   width: 100%;
   transition: opacity 0.3s ease, color 0.3s ease, background 0.3s ease;
+  cursor: pointer;
+  gap: 12px;
+  padding: 4px 0; /* hitbox un poco más grande */
 }
 
 /* COLUMNAS */
-.title {
-  flex: 2;
-}
-
-.category {
-  flex: 1;
-  text-align: center;
-  font-size: 13px;
-  opacity: 0.8;
-}
-
-.priority {
-  flex: 1;
-  text-align: right;
-  padding: 4px 8px;
-  border-radius: 6px;
-  color: white;
-  font-size: 12px;
-}
+.title { flex: 2; }
+.category { flex: 1; text-align: center; font-size: 13px; opacity: 0.8; }
+.priority { flex: 1; text-align: right; padding: 4px 8px; border-radius: 6px; color: white; font-size: 12px; }
 
 /* PRIORIDADES */
 .high .priority { background: var(--priority-high); }
@@ -185,9 +178,7 @@ aside li.active {
     gap: 6px;
   }
 
-  .title,
-  .category,
-  .priority {
+  .title, .category, .priority {
     flex: unset;
     text-align: left;
   }
