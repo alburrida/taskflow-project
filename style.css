@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 /* VARIABLES */
 :root {
   --color-bg: #f0f2f5;
@@ -29,7 +33,7 @@ body {
   min-height: 100vh;
 }
 
-/* NOTA CENTRAL */
+/* CONTENEDOR */
 .contenedor-de-notas {
   background: var(--color-note);
   padding: 24px;
@@ -49,10 +53,19 @@ header {
   margin-bottom: var(--spacing);
 }
 
-/* ASIDE */
+/* ===== CATEGORÍAS ===== */
 aside {
   margin-bottom: var(--spacing);
   text-align: center;
+}
+
+.category-box {
+  background: #ffffffcc;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: inline-block;
+  margin: 0 auto var(--spacing);
 }
 
 aside ul {
@@ -69,62 +82,82 @@ aside li {
   border-radius: 20px;
   font-size: 14px;
   font-weight: 500;
-  transition: transform 0.2s ease, opacity 0.2s ease,
-              filter 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease, filter 0.3s ease, box-shadow 0.3s ease;
 }
 
 aside li:hover {
   transform: scale(1.08);
-  opacity: 0.85;
 }
 
-/* Cajita de categorías */
-.category-box {
-  background: #ffffffcc; /* blanco semitransparente, o usa var(--color-note) */
-  padding: 12px 16px;
-  border-radius: var(--radius);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  display: inline-block; /* se ajusta al contenido */
-  margin-bottom: var(--spacing);
-
-  .category-box {
-    margin: 0 auto var(--spacing); /* margen superior automático, abajo spacing */
-    text-align: center;
-  }
-
-}
-
-/* COLORES POR CATEGORÍA */
+/* COLORES FILTRO */
 .filtro-all { background: var(--filtro-all); color: #333; }
 .filtro-trabajo { background: var(--filtro-trabajo); color: white; }
 .filtro-hogar { background: var(--filtro-hogar); color: white; }
 .filtro-personal { background: var(--filtro-personal); color: white; }
 
-/* BOTÓN ACTIVO */
 aside li.active {
   filter: brightness(0.6);
   box-shadow: inset 0 3px 6px rgba(0,0,0,0.3);
-  transform: scale(1.05);
 }
 
-/* LISTA DE TAREAS */
+/* ===== FORMULARIO ===== */
+#task-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+#task-input,
+#task-form select {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+#task-form button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  background: var(--color-header);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+#task-form button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* ===== BUSCADOR ===== */
+#search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+  outline: none;
+}
+
+/* ===== LISTA ===== */
 .task-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-/* TARJETA TAREA */
+/* ===== TARJETA ===== */
 .task {
   display: flex;
   align-items: center;
+  gap: 12px;
   background: white;
   padding: var(--spacing);
   border-radius: var(--radius);
-  position: relative;
-  transition: transform 0.2s ease,
-              box-shadow 0.2s ease,
-              background 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer; /* toda la tarjeta clicable */
 }
 
@@ -133,57 +166,48 @@ aside li.active {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* CHECKBOX OCULTO */
-.task input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* CONTENIDO TAREA - TODO CLICABLE */
-.task-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  transition: opacity 0.3s ease, color 0.3s ease, background 0.3s ease;
-  cursor: pointer;
-  gap: 12px;
-  padding: 4px 0; /* hitbox un poco más grande */
-}
-
 /* COLUMNAS */
 .title { flex: 2; }
 .category { flex: 1; text-align: center; font-size: 13px; opacity: 0.8; }
 .priority { flex: 1; text-align: right; padding: 4px 8px; border-radius: 6px; color: white; font-size: 12px; }
 
-/* PRIORIDADES */
+/* COLORES PRIORIDAD */
 .high .priority { background: var(--priority-high); }
 .medium .priority { background: var(--priority-medium); }
 .low .priority { background: var(--priority-low); }
 
-/* TAREA COMPLETADA */
-.task input[type="checkbox"]:checked + .task-content {
-  text-decoration: line-through;
+/* COMPLETADA */
+.task.completed {
   opacity: 0.6;
-  color: #555;
-  background: #f5f5f5;
+  text-decoration: line-through;
+}
+
+/* BOTÓN BORRAR */
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* OCULTAR EL CHECKBOX (ya no hace nada visual) */
+.task input[type="checkbox"] {
+  display: none;
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .task-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .title, .category, .priority {
-    flex: unset;
-    text-align: left;
-  }
-
   aside ul {
     flex-direction: column;
+  }
+
+  .task {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .category,
+  .priority {
+    text-align: left;
   }
 }

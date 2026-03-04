@@ -15,8 +15,8 @@
      )   /\ \._./ /\   (
       )_/ /|\   /|\ \_(
 -->
-
 </head>
+
 <body>
 
 <div class="contenedor-de-notas">
@@ -26,99 +26,77 @@
   </header>
 
   <aside>
-  <div class="category-box">
-    <h2>Categorías</h2>
-    <ul>
-      <li data-filter="all" class="filtro-all">Todas</li>
-      <li data-filter="trabajo" class="filtro-trabajo">Trabajo</li>
-      <li data-filter="hogar" class="filtro-hogar">Hogar</li>
-      <li data-filter="personal" class="filtro-personal">Personal</li>
-    </ul>
-  </div>
-</aside>
+    <div class="category-box">
+      <h2>Categorías</h2>
+      <ul>
+        <li data-filter="all" class="filtro-all active">Todas</li>
+        <li data-filter="trabajo" class="filtro-trabajo">Trabajo</li>
+        <li data-filter="hogar" class="filtro-hogar">Hogar</li>
+        <li data-filter="personal" class="filtro-personal">Personal</li>
+      </ul>
+    </div>
+  </aside>
 
   <main>
-    <section class="task-list">
+    <!-- FORMULARIO AÑADIR TAREA -->
+    <form id="task-form">
+      <input type="text" id="task-input" placeholder="Añadir nueva tarea..." required>
+      
+      <select id="task-category">
+        <option value="trabajo">Trabajo</option>
+        <option value="hogar">Hogar</option>
+        <option value="personal">Personal</option>
+      </select>
 
-      <div class="task high" data-category="hogar">
-        <input type="checkbox" id="tarea1">
-        <label for="tarea1" class="task-content">
-            <span class="title">Cocinar</span>
-            <span class="category">Hogar</span>
-            <span class="priority">Alta</span>
-        </label>
-      </div>
+      <select id="task-priority">
+        <option value="high">Alta</option>
+        <option value="medium">Media</option>
+        <option value="low">Baja</option>
+      </select>
 
-      <div class="task medium" data-category="trabajo">
-        <input type="checkbox" id="tarea2">
-        <label for="tarea2" class="task-content">
-          <span class="title">Proyecto</span>
-          <span class="category">Trabajo</span>
-          <span class="priority">Media</span>
-        </label>
-      </div>
+      <button type="submit">Añadir</button>
+    </form>
 
-      <div class="task low" data-category="personal">
-        <input type="checkbox" id="tarea3">
-        <label for="tarea3" class="task-content">
-          <span class="title">Ir al gimnasio</span>
-          <span class="category">Personal</span>
-          <span class="priority">Baja</span>
-        </label>
-      </div>
+    <!-- BUSCADOR -->
+    <input type="text" id="search-input" placeholder="Buscar tarea...">
 
-      <div class="task high" data-category="trabajo">
-        <input type="checkbox" id="tarea4">
-        <label for="tarea4" class="task-content">
-          <span class="title">Preparar presentación</span>
-          <span class="category">Trabajo</span>
-          <span class="priority">Alta</span>
-        </label>
-      </div>
-
-      <div class="task medium" data-category="hogar">
-        <input type="checkbox" id="tarea5">
-        <label for="tarea5" class="task-content">
-          <span class="title">Hacer la compra semanal</span>
-          <span class="category">Hogar</span>
-          <span class="priority">Media</span>
-        </label>
-      </div>
-
+    <!-- LISTA DE TAREAS -->
+    <section class="task-list" id="task-list">
     </section>
   </main>
 
 </div>
 
+<!-- FILTROS -->
+<script src="app.js"></script>
 <script>
+/* FILTROS POR CATEGORÍA */
 const filtros = document.querySelectorAll("aside li");
-const tareas = document.querySelectorAll(".task");
+
+function aplicarFiltro(categoria) {
+  document.querySelectorAll(".task").forEach(tarea => {
+    if (categoria === "all" || tarea.dataset.category === categoria) {
+      tarea.style.display = "flex";
+    } else {
+      tarea.style.display = "none";
+    }
+  });
+}
 
 filtros.forEach(filtro => {
   filtro.addEventListener("click", () => {
     const categoria = filtro.dataset.filter;
 
-    // Si el botón ya estaba activo, lo desactivamos
+    // Toggle si ya estaba activo
     if (filtro.classList.contains("active")) {
       filtro.classList.remove("active");
-      // Mostrar todas las tareas
-      tareas.forEach(tarea => tarea.style.display = "flex");
-      return; // salimos del click
+      aplicarFiltro("all");
+      return;
     }
 
-    // Si no estaba activo, desactivar todos
     filtros.forEach(btn => btn.classList.remove("active"));
-    // Activar el botón clicado
     filtro.classList.add("active");
-
-    // Filtrar tareas
-    tareas.forEach(tarea => {
-      if (categoria === "all" || tarea.dataset.category === categoria) {
-        tarea.style.display = "flex";
-      } else {
-        tarea.style.display = "none";
-      }
-    });
+    aplicarFiltro(categoria);
   });
 });
 </script>
