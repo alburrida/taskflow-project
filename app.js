@@ -93,7 +93,7 @@ function renderTask(task) {
     "gap-2"
   );
 
-  // CORRECTO: asignamos data-category para filtros
+
   div.dataset.category = task.category;
   div.dataset.id = task.id;
 
@@ -176,15 +176,13 @@ filtros.forEach(filtro => {
   filtro.addEventListener("click", () => {
     const categoria = filtro.dataset.filter;
 
-    if (filtro.classList.contains("active")) {
-      filtro.classList.remove("active");
-      document.querySelectorAll(".task").forEach(t => (t.style.display = "flex"));
-      return;
-    }
+    // Quitar clase selected de todos
+    filtros.forEach(btn => btn.classList.remove("selected", "shadow-inner", "translate-y-1"));
 
-    filtros.forEach(btn => btn.classList.remove("active"));
-    filtro.classList.add("active");
+    // Marcar el botón actual como seleccionado y simular hundido
+    filtro.classList.add("selected", "shadow-inner", "translate-y-1");
 
+    // Mostrar/ocultar tareas
     document.querySelectorAll(".task").forEach(tarea => {
       tarea.style.display =
         categoria === "all" || tarea.dataset.category === categoria ? "flex" : "none";
