@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lista de Tareas - Nota Central</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow - Lista de Tareas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <script>
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme === "dark") {
+    document.documentElement.classList.add("dark");
+  }
+  </script>
+
 
 <!--
             _   _
@@ -16,90 +30,89 @@
       )_/ /|\   /|\ \_(
 -->
 </head>
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300 flex justify-center items-center min-h-screen">
 
-<body>
+  <div class="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition-colors duration-300">
 
-<div class="contenedor-de-notas">
+    <!-- HEADER -->
+    <header class="relative flex justify-center items-center mb-6">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-800 dark:text-gray-100">Lista de Tareas</h1>
+      <button
+      id="theme-toggle"
+      class="absolute right-0 px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-700 text-sm hover:scale-105 transition">
+      🌙
+      </button>
+    </header>
 
-  <header>
-    <h1>Lista de Tareas</h1>
-  </header>
+    <!-- CATEGORÍAS -->
+    <div class="flex gap-2 mb-6 flex-wrap">
 
-  <aside>
-    <div class="category-box">
-      <h2>Categorías</h2>
-      <ul>
-        <li data-filter="all" class="filtro-all active">Todas</li>
-        <li data-filter="trabajo" class="filtro-trabajo">Trabajo</li>
-        <li data-filter="hogar" class="filtro-hogar">Hogar</li>
-        <li data-filter="personal" class="filtro-personal">Personal</li>
-      </ul>
-    </div>
-  </aside>
+      <button data-filter="all"
+        class="category-btn px-3 py-1 rounded-xl text-sm bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out">
+        Todas
+      </button>
 
-  <main>
-    <!-- FORMULARIO AÑADIR TAREA -->
-    <form id="task-form">
-      <input type="text" id="task-input" placeholder="Añadir nueva tarea..." required>
-      
-      <select id="task-category">
+      <button data-filter="trabajo"
+        class="category-btn px-3 py-1 rounded-xl text-sm bg-purple-400 hover:bg-purple-500 dark:bg-purple-600 dark:hover:bg-purple-500 dark:text-white shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out">
+        Trabajo
+      </button>
+
+      <button data-filter="hogar"
+        class="category-btn px-3 py-1 rounded-xl text-sm bg-pink-300 hover:bg-pink-400 dark:bg-pink-600 dark:hover:bg-pink-500 dark:text-white shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out">
+        Hogar
+      </button>
+
+      <button data-filter="personal"
+        class="category-btn px-3 py-1 rounded-xl text-sm bg-indigo-300 hover:bg-indigo-400 dark:bg-indigo-600 dark:hover:bg-indigo-500 dark:text-white shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out">
+        Personal
+      </button>
+
+  </div>
+
+    <!-- FORMULARIO -->
+    <form id="task-form" class="flex gap-2 mb-4 flex-wrap">
+      <input id="task-input" type="text" placeholder="Añadir nueva tarea..."
+        class="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-300 outline-none" required>
+
+      <select id="task-category" class="px-3 py-2 rounded-xl border border-gray-300">
         <option value="trabajo">Trabajo</option>
         <option value="hogar">Hogar</option>
         <option value="personal">Personal</option>
       </select>
 
-      <select id="task-priority">
+      <select id="task-priority" class="px-3 py-2 rounded-xl border border-gray-300">
         <option value="high">Alta</option>
         <option value="medium">Media</option>
         <option value="low">Baja</option>
       </select>
 
-      <button type="submit">Añadir</button>
+      <button
+        class="bg-indigo-200 dark:bg-indigo-700 text-gray-800 dark:text-gray-100 px-4 py-2 rounded-xl shadow hover:shadow-lg hover:scale-104 transition-transform duration-200"
+      >
+        Añadir
+      </button>
     </form>
 
     <!-- BUSCADOR -->
-    <input type="text" id="search-input" placeholder="Buscar tarea...">
+    <input id="search-input" type="text" placeholder="Buscar tarea..."
+      class="w-full mb-6 px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-300 outline-none">
 
     <!-- LISTA DE TAREAS -->
-    <section class="task-list" id="task-list">
+    <section id="task-list" class="flex flex-col gap-3">
+      <!-- Las tareas se añadirán dinámicamente con JS -->
     </section>
-  </main>
 
-</div>
+  </div>
 
-<!-- FILTROS -->
-<script src="app.js"></script>
-<script>
-/* FILTROS POR CATEGORÍA */
-const filtros = document.querySelectorAll("aside li");
-
-function aplicarFiltro(categoria) {
-  document.querySelectorAll(".task").forEach(tarea => {
-    if (categoria === "all" || tarea.dataset.category === categoria) {
-      tarea.style.display = "flex";
-    } else {
-      tarea.style.display = "none";
-    }
-  });
-}
-
-filtros.forEach(filtro => {
-  filtro.addEventListener("click", () => {
-    const categoria = filtro.dataset.filter;
-
-    // Toggle si ya estaba activo
-    if (filtro.classList.contains("active")) {
-      filtro.classList.remove("active");
-      aplicarFiltro("all");
-      return;
-    }
-
-    filtros.forEach(btn => btn.classList.remove("active"));
-    filtro.classList.add("active");
-    aplicarFiltro(categoria);
-  });
-});
-</script>
+  <!-- JS -->
+  <script src="app.js"></script>
+  <script>
+    // Toggle dark mode
+    const themeToggle = document.getElementById("theme-toggle");
+    themeToggle.addEventListener("click", () => {
+      document.documentElement.classList.toggle("dark");
+    });
+  </script>
 
 </body>
 </html>
