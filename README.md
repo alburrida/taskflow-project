@@ -50,3 +50,31 @@ Aplicación web para gestionar tareas de manera local, con interfaz moderna, mod
 ## Despliegue
 
 - La aplicación se puede desplegar fácilmente en **Vercel**.
+
+## Mejoras recientes
+
+Gracias al uso de técnicas de **refactorización y asistencia con IA** (Cursor y ChatGPT), se han incorporado las siguientes mejoras en TaskFlow:
+
+- **Contadores de tareas**:  
+  - Pendientes, completadas y totales, actualizados automáticamente al crear, completar o eliminar tareas.  
+  - Visualización integrada en la interfaz con colores diferenciados.
+
+- **Validaciones mejoradas en el formulario**:  
+  - Tareas deben tener **entre 3 y 15 caracteres**.  
+  - Los mensajes de error se muestran directamente en la interfaz, no como alertas del navegador.
+
+- **Interfaz más clara y accesible**:  
+  - Hover en tarjetas de tareas visible en **modo oscuro**.  
+  - Se aplicó `select-none` para evitar selección accidental de la página.  
+  - Mejor consistencia de colores y estilos en Tailwind CSS.
+
+- **Refactorización de código**:  
+  - Funciones largas o repetitivas (como `renderTask`) se modularizaron.  
+  - Nombres de variables más descriptivos (`t` → `task`, `div` → `taskEl`).  
+  - Helpers (`capitalize`, `priorityText`) simplificados y documentados con **JSDoc**.  
+  - Contadores y validaciones centralizados para facilitar mantenimiento.
+
+- **Uso de IA en desarrollo**:  
+  - Cursor ayudó a mejorar **legibilidad, modularidad y consistencia**.  
+  - Atajos más utilizados: `Ctrl+L`, `Ctrl+K`, `Ctrl+Shift+Y`.  
+  - Cambios revisados manualmente antes de aceptarlos.
