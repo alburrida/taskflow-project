@@ -1,4 +1,4 @@
-// ELEMENTOS DEL DOM
+// ===== ELEMENTOS DEL DOM =====
 const form = document.getElementById("task-form");
 const input = document.getElementById("task-input");
 const categorySelect = document.getElementById("task-category");
@@ -7,7 +7,7 @@ const taskList = document.getElementById("task-list");
 const searchInput = document.getElementById("search-input");
 const counter = document.getElementById("task-counter");
 
-// ARRAY DE TAREAS
+// ===== ESTADO DE LA APLICACIÓN =====
 let tasks = [];
 
 /* ===== DARK MODE ===== */
@@ -23,7 +23,6 @@ function updateThemeIcon() {
 }
 
 themeToggle.addEventListener("click", () => {
-
   const html = document.documentElement;
 
   html.classList.toggle("dark");
@@ -37,22 +36,25 @@ themeToggle.addEventListener("click", () => {
   updateThemeIcon();
 });
 
-/* actualizar icono al cargar */
+// Actualizar icono al cargar
 updateThemeIcon();
 
 /* ===== CARGAR TAREAS AL INICIAR ===== */
 document.addEventListener("DOMContentLoaded", () => {
   const stored = localStorage.getItem("tasks");
+
   if (stored) {
     tasks = JSON.parse(stored);
-    tasks.forEach(task => renderTask(task));
+    tasks.forEach((task) => renderTask(task));
   }
+
   updateCounter();
 });
 
 /* ===== AÑADIR TAREA ===== */
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+
   const text = input.value.trim();
   if (!text) return;
 
@@ -61,7 +63,7 @@ form.addEventListener("submit", (e) => {
     text,
     category: categorySelect.value,
     priority: prioritySelect.value,
-    completed: false
+    completed: false,
   };
 
   tasks.push(newTask);
@@ -74,6 +76,7 @@ form.addEventListener("submit", (e) => {
 /* ===== RENDERIZAR TAREA ===== */
 function renderTask(task) {
   const div = document.createElement("div");
+
   div.classList.add(
     "task",
     "flex",
@@ -90,15 +93,16 @@ function renderTask(task) {
     "ease-in-out",
     "cursor-pointer",
     "flex-wrap",
-    "gap-2"
+    "gap-2",
   );
-
 
   div.dataset.category = task.category;
   div.dataset.id = task.id;
 
   div.innerHTML = `
-    <p class="flex-1 font-medium text-gray-800 dark:text-gray-100 title">${task.text}</p>
+    <p class="flex-1 font-medium text-gray-800 dark:text-gray-100 title">
+      ${task.text}
+    </p>
 
     <span class="px-2 py-1 text-xs rounded-full text-white transition-colors duration-200 ${
       task.category === "trabajo"
@@ -106,7 +110,7 @@ function renderTask(task) {
         : task.category === "hogar"
         ? "bg-pink-300 hover:bg-pink-400 dark:bg-pink-600 dark:hover:bg-pink-500"
         : "bg-indigo-300 hover:bg-indigo-400 dark:bg-indigo-600 dark:hover:bg-indigo-500" // personal
-}">
+    }">
       ${capitalize(task.category)}
     </span>
 
@@ -120,7 +124,9 @@ function renderTask(task) {
       ${priorityText(task.priority)}
     </span>
 
-    <button class="delete-btn text-sm hover:scale-110 transition-transform duration-200 ml-2">❌</button>
+    <button class="delete-btn text-sm hover:scale-110 transition-transform duration-200 ml-2">
+      ❌
+    </button>
   `;
 
   const deleteBtn = div.querySelector(".delete-btn");
@@ -134,9 +140,19 @@ function renderTask(task) {
     div.classList.toggle("completed");
 
     if (task.completed) {
-      div.classList.add("bg-green-100", "dark:bg-green-700", "line-through", "text-gray-500");
+      div.classList.add(
+        "bg-green-100",
+        "dark:bg-green-700",
+        "line-through",
+        "text-gray-500",
+      );
     } else {
-      div.classList.remove("bg-green-100", "dark:bg-green-700", "line-through", "text-gray-500");
+      div.classList.remove(
+        "bg-green-100",
+        "dark:bg-green-700",
+        "line-through",
+        "text-gray-500",
+      );
     }
 
     saveTasks();
@@ -146,7 +162,8 @@ function renderTask(task) {
   // Borrar tarea
   deleteBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    tasks = tasks.filter(t => t.id !== task.id);
+
+    tasks = tasks.filter((t) => t.id !== task.id);
     div.remove();
     saveTasks();
     updateCounter();
@@ -207,3 +224,18 @@ function priorityText(priority) {
   if (priority === "medium") return "Media";
   return "Baja";
 }
+
+// función que devuelve el número de tareas completadas
+function completedTasks() {
+  return tasks.filter(t => t.completed).length;
+} 
+
+// función que devuelve el número de tareas pendientes
+function pendingTasks() {
+  return tasks.filter(t => !t.completed).length;
+} 
+
+// función que devuelve el número de tareas
+function totalTasks() {
+  return tasks.length;
+} 
