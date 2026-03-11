@@ -1,0 +1,39 @@
+#task-list {
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #6366f1 #e5e7eb; /* pulgar y track */
+  }
+  
+  /* Chrome / Edge */
+  #task-list::-webkit-scrollbar {
+    width: 8px;
+  }
+  #task-list::-webkit-scrollbar-thumb {
+    background-color: #6366f1;
+    border-radius: 4px;
+  }
+  #task-list::-webkit-scrollbar-track {
+    background: #e5e7eb;
+    border-radius: 4px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  input:focus, select:focus, button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* Indigo-500 */
+  }
+
+  .task {
+    transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
+  }
+  
+  .task:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  

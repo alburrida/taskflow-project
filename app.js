@@ -6,6 +6,7 @@ const prioritySelect = document.getElementById("task-priority");
 const taskList = document.getElementById("task-list");
 const searchInput = document.getElementById("search-input");
 const counter = document.getElementById("task-counter");
+const formError = document.getElementById("form-error");
 
 // ===== ESTADO DE LA APLICACIÓN =====
 let tasks = [];
@@ -48,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tasks.forEach((task) => renderTask(task));
   }
 
-  updateCounter();
+  updateCounters(tasks);
 });
 
 /* ===== AÑADIR TAREA ===== */
@@ -56,7 +57,21 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const text = input.value.trim();
+
+  // Validación de texto
   if (!text) return;
+  if (text.length < 3) {
+    // Mostrar mensaje con fade-in
+    formError.textContent = "La tarea debe tener al menos 3 caracteres.";
+    formError.classList.remove("hidden");
+    formError.classList.remove("opacity-0");
+    formError.classList.add("opacity-100");
+    return;
+  }
+
+  // ocultamos mensaje
+  formError.classList.add("opacity-0");
+  setTimeout(() => formError.classList.add("hidden"), 200);
 
   const newTask = {
     id: Date.now(),
@@ -68,13 +83,13 @@ form.addEventListener("submit", (e) => {
 
   tasks.push(newTask);
   renderTask(newTask);
+  updateCounters(tasks);
   saveTasks();
-  updateCounter();
   input.value = "";
 });
 
-/* ===== RENDERIZAR TAREA ===== */
-function renderTask(task) {
+/* ===== CREAR ELEMENTO DE TAREA ===== */
+function createTaskElement(task) {
   const div = document.createElement("div");
 
   div.classList.add(
@@ -86,6 +101,8 @@ function renderTask(task) {
     "rounded-xl",
     "bg-gray-50",
     "dark:bg-gray-700",
+    "dark:hover:shadow-gray-900", 
+    "dark:hover:shadow-xl",
     "shadow-md",
     "hover:shadow-xl",
     "transition-shadow",
@@ -129,6 +146,11 @@ function renderTask(task) {
     </button>
   `;
 
+  return div;
+}
+
+/* ===== AÑADIR LISTENERS A LA TAREA ===== */
+function attachTaskListeners(task, div) {
   const deleteBtn = div.querySelector(".delete-btn");
 
   // Click en toda la tarjeta para marcar completada
@@ -156,7 +178,7 @@ function renderTask(task) {
     }
 
     saveTasks();
-    updateCounter();
+    updateCounters(tasks);
   });
 
   // Borrar tarea
@@ -166,9 +188,16 @@ function renderTask(task) {
     tasks = tasks.filter((t) => t.id !== task.id);
     div.remove();
     saveTasks();
-    updateCounter();
+    updateCounters(tasks);
   });
 
+  return div;
+}
+
+/* ===== RENDERIZAR TAREA ===== */
+function renderTask(task) {
+  const div = createTaskElement(task);
+  attachTaskListeners(task, div);
   taskList.appendChild(div);
 }
 
@@ -207,12 +236,6 @@ filtros.forEach(filtro => {
   });
 });
 
-/* ===== CONTADOR ===== */
-function updateCounter() {
-  if (!counter) return;
-  const pending = tasks.filter(t => !t.completed).length;
-  counter.textContent = `Tareas pendientes: ${pending}`;
-}
 
 /* ===== HELPERS ===== */
 function capitalize(text) {
@@ -225,17 +248,28 @@ function priorityText(priority) {
   return "Baja";
 }
 
-// función que devuelve el número de tareas completadas
-function completedTasks() {
-  return tasks.filter(t => t.completed).length;
-} 
+/* ===== CONTADOR REFACTORIZADO ===== */
 
-// función que devuelve el número de tareas pendientes
-function pendingTasks() {
-  return tasks.filter(t => !t.completed).length;
-} 
+/**
+ * Actualiza los contadores de tareas en la interfaz.
+ * Muestra tareas pendientes, completadas y totales.
+ * @param {Array} tasks - Array de tareas, cada una con propiedad `completed`
+ */
+function updateCounters(tasks) {
+  // Seleccionamos los elementos del DOM donde se mostrarán los contadores
+  const pendingEl = document.getElementById("counter-pending");
+  const completedEl = document.getElementById("counter-completed");
+  const totalEl = document.getElementById("counter-total");
 
-// función que devuelve el número de tareas
-function totalTasks() {
-  return tasks.length;
-} 
+  if (!pendingEl || !completedEl || !totalEl) return;
+
+  // Calculamos los valores
+  const pending = tasks.filter(t => !t.completed).length;
+  const completed = tasks.filter(t => t.completed).length;
+  const total = tasks.length;
+
+  // Actualizamos el DOM
+  pendingEl.textContent = `Pendientes: ${pending}`;
+  completedEl.textContent = `Completadas: ${completed}`;
+  totalEl.textContent = `Total: ${total}`;
+}

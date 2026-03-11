@@ -30,7 +30,7 @@
       )_/ /|\   /|\ \_(
 -->
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300 flex justify-center items-center min-h-screen">
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300 flex justify-center items-center min-h-screen select-none">
 
   <div class="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition-colors duration-300">
 
@@ -43,6 +43,14 @@
       🌙
       </button>
     </header>
+
+
+    <!-- CONTADORES -->
+    <div class="flex gap-4 mb-4 text-center justify-center">
+      <div id="counter-pending" class="bg-red-200 dark:bg-red-600 text-red-800 dark:text-white px-3 py-1 rounded-xl">Pendientes: 0</div>
+      <div id="counter-completed" class="bg-green-200 dark:bg-green-600 text-green-800 dark:text-white px-3 py-1 rounded-xl">Completadas: 0</div>
+      <div id="counter-total" class="bg-blue-200 dark:bg-blue-600 text-blue-800 dark:text-white px-3 py-1 rounded-xl">Total: 0</div>
+    </div>
 
     <!-- CATEGORÍAS -->
     <div class="flex gap-2 mb-6 flex-wrap">
@@ -77,6 +85,7 @@
         id="task-input"
         type="text"
         placeholder="Añadir nueva tarea..."
+        maxlength="15"
         class="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-300 outline-none"
         required
       />
@@ -108,6 +117,10 @@
       >
         Añadir
       </button>
+
+      <!-- Mensaje de error con transición -->
+<p id="form-error" class="text-red-500 text-sm mt-1 transition-opacity duration-200 opacity-0 hidden"></p>
+
     </form>
 
     <!-- BUSCADOR -->
