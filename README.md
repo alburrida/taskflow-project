@@ -78,3 +78,15 @@ Gracias al uso de técnicas de **refactorización y asistencia con IA** (Cursor 
   - Cursor ayudó a mejorar **legibilidad, modularidad y consistencia**.  
   - Atajos más utilizados: `Ctrl+L`, `Ctrl+K`, `Ctrl+Shift+Y`.  
   - Cambios revisados manualmente antes de aceptarlos.
+  
+        ┌──────────────────────────────────────────────────────────┐
+        │                   Lista de Tareas                    🌙 │
+        └──────────────────────────────────────────────────────────┘
+        ┌──────────────────────────────────────────────────────────┐    
+        │      Contador     │             Añadir tarea             │ 
+        │                   │               Buscador               │ 
+        │                   │    Todas  Trabajo  Hogar  Personal   │ 
+        └──────────────────────────────────────────────────────────┘
+        ┌──────────────────────────────────────────────────────────┐      
+        │                     tareas                               │
+        └──────────────────────────────────────────────────────────┘
