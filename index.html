@@ -47,11 +47,19 @@
     </header>
 
 
-    <!-- CONTADORES -->
-    <div class="flex gap-4 mb-4 text-center justify-center">
+    <!-- CONTADORES Y ACCIONES GLOBALES -->
+    <div class="flex flex-wrap gap-4 mb-4 items-center justify-center">
       <div id="counter-pending" class="bg-red-200 dark:bg-red-600 text-red-800 dark:text-white px-3 py-1 rounded-xl">Pendientes: 0</div>
       <div id="counter-completed" class="bg-green-200 dark:bg-green-600 text-green-800 dark:text-white px-3 py-1 rounded-xl">Completadas: 0</div>
       <div id="counter-total" class="bg-blue-200 dark:bg-blue-600 text-blue-800 dark:text-white px-3 py-1 rounded-xl">Total: 0</div>
+
+      <button
+        id="complete-all-btn"
+        class="px-3 py-1 rounded-xl text-sm bg-green-300 hover:bg-green-400 dark:bg-green-700 dark:hover:bg-green-600 text-green-900 dark:text-white shadow-md hover:shadow-xl active:translate-y-1 active:shadow-inner transition-transform duration-150 hover:scale-105"
+        type="button"
+      >
+        Marcar todas como completadas
+      </button>
     </div>
 
     <!-- CATEGORÍAS -->

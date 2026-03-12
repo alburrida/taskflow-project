@@ -10,6 +10,7 @@ const formError = document.getElementById("form-error");
 const pendingCounterEl = document.getElementById("counter-pending");
 const completedCounterEl = document.getElementById("counter-completed");
 const totalCounterEl = document.getElementById("counter-total");
+const completeAllBtn = document.getElementById("complete-all-btn");
 
 // ===== ESTADO DE LA APLICACIÓN =====
 let tasks = [];
@@ -461,4 +462,36 @@ function updateCounters(tasks) {
   pendingCounterEl.textContent = `Pendientes: ${pending}`;
   completedCounterEl.textContent = `Completadas: ${completed}`;
   totalCounterEl.textContent = `Total: ${total}`;
+}
+
+/* ===== ACCIONES GLOBALES ===== */
+/**
+ * Alterna el estado de todas las tareas (completadas / no completadas), actualizando
+ * estado interno, UI y almacenamiento en localStorage.
+ */
+function completeAllTasks() {
+  if (!tasks.length) return;
+
+  // Si todas están completadas, las ponemos como pendientes; si no, las completamos todas
+  const allCompleted = tasks.length > 0 && tasks.every((task) => task.completed);
+  const newCompletedState = !allCompleted;
+
+  tasks.forEach((task) => {
+    task.completed = newCompletedState;
+  });
+
+  document.querySelectorAll(".task").forEach((taskEl) => {
+    const id = taskEl.dataset.id;
+    const task = tasks.find((t) => String(t.id) === String(id));
+    if (task) {
+      updateTaskVisualState(task, taskEl);
+    }
+  });
+
+  saveTasks();
+  updateCounters(tasks);
+}
+
+if (completeAllBtn) {
+  completeAllBtn.addEventListener("click", completeAllTasks);
 }
