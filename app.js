@@ -20,10 +20,16 @@ let tasks = [];
 const themeToggle = document.getElementById("theme-toggle");
 
 function updateThemeIcon() {
+  const themeToggle = document.getElementById("theme-toggle");
+  // Limpiamos cualquier icono anterior
+  themeToggle.innerHTML = "";
+  
   if (document.documentElement.classList.contains("dark")) {
-    themeToggle.textContent = "☀️";
+    // Mostrar icono de sol en modo oscuro
+    themeToggle.innerHTML = `<i class="fas fa-sun"></i>`;
   } else {
-    themeToggle.textContent = "🌙";
+    // Mostrar icono de luna en modo claro
+    themeToggle.innerHTML = `<i class="fas fa-moon"></i>`;
   }
 }
 
@@ -56,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCounters(tasks);
 });
 
+
 /* ===== AÑADIR TAREA ===== */
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -65,11 +72,18 @@ form.addEventListener("submit", (e) => {
   // Validación de texto
   if (!text) return;
   if (text.length < 3) {
-    // Mostrar mensaje con fade-in
     formError.textContent = "La tarea debe tener al menos 3 caracteres.";
-    formError.classList.remove("hidden");
+
+    // Mostrar con fade-in
     formError.classList.remove("opacity-0");
     formError.classList.add("opacity-100");
+
+    // Desaparece automáticamente después de 2 segundos
+    setTimeout(() => {
+      formError.classList.remove("opacity-100");
+      formError.classList.add("opacity-0");
+    }, 2000);
+
     return;
   }
 
@@ -117,48 +131,53 @@ function createTaskElement(task) {
     "gap-2",
   );
 
+  
   div.dataset.category = task.category;
   div.dataset.id = task.id;
 
   div.innerHTML = `
-    <p class="flex-1 font-medium text-gray-800 dark:text-gray-100 title rounded-xl mx-2">
+    <p class="flex-1 font-medium text-[#623229] dark:text-[#f8e9c9] title rounded-xl mx-2">
       ${task.text}
     </p>
 
-    <span class="px-2 py-1 text-xs rounded-xl text-white transition-colors duration-200 mx-1 ${
+    <!-- Chip de categoría -->
+    <span class="px-2 py-1 text-xs rounded-xl border flex items-center justify-center gap-1 mx-1 transition-all duration-200 hover:scale-105 ${
       task.category === "trabajo"
-        ? "bg-purple-400 hover:bg-purple-500 dark:bg-purple-600 dark:hover:bg-purple-500"
+        ? "bg-[#ff893b] border-[#ff893b] text-white dark:bg-[#ff893b] dark:border-[#ff893b]"
         : task.category === "hogar"
-        ? "bg-pink-300 hover:bg-pink-400 dark:bg-pink-600 dark:hover:bg-pink-500"
-        : "bg-indigo-300 hover:bg-indigo-400 dark:bg-indigo-600 dark:hover:bg-indigo-500"
+        ? "bg-[#eaad88] border-[#eaad88] text-[#623229] dark:bg-[#b47b6b] dark:border-[#b47b6b] dark:text-[#f8e9c9]"
+        : task.category === "personal"
+        ? "bg-[#f19281] border-[#f19281] text-white dark:bg-[#f19281] dark:border-[#f19281]"
+        : "bg-[#b47b6b] border-[#b47b6b] text-white dark:bg-[#623229] dark:border-[#623229]"
     }">
       ${capitalize(task.category)}
     </span>
 
-    <span class="px-2 py-1 text-xs rounded-xl text-white transition-colors duration-200 mx-1 ${
+    <!-- Chip de prioridad -->
+    <span class="px-2 py-1 text-xs rounded-xl transition-colors duration-200 mx-1 ${
       task.priority === "high"
-        ? "bg-red-300 hover:bg-red-400 dark:bg-red-600 dark:hover:bg-red-500"
+        ? "bg-[#f19281] text-white"
         : task.priority === "medium"
-        ? "bg-yellow-300 hover:bg-yellow-400 dark:bg-yellow-600 dark:hover:bg-yellow-500"
-        : "bg-green-300 hover:bg-green-400 dark:bg-green-600 dark:hover:bg-green-500"
+        ? "bg-[#ff893b] text-white"
+        : "bg-[#eaad88] text-[#623229]"
     }">
       ${priorityText(task.priority)}
     </span>
 
     <button
-      class="edit-btn px-2 py-1 text-xs rounded-xl text-white bg-blue-300 hover:bg-blue-400 dark:bg-blue-600 dark:hover:bg-blue-500 transition-colors duration-200 mx-1"
+      class="edit-btn px-2 py-1 text-xs rounded-xl text-[#623229] bg-transparent hover:bg-[#eaad88]/30 dark:text-[#f8e9c9] dark:hover:bg-[#623229]/30 transition-colors duration-200 mx-1 flex items-center justify-center"
       type="button"
       aria-label="Editar tarea"
     >
-      ✏️
+      <i class="fa-solid fa-pen"></i>
     </button>
 
     <button
-      class="delete-btn px-2 py-1 text-xs rounded-xl text-white bg-red-300 hover:bg-red-400 dark:bg-red-600 dark:hover:bg-red-500 transition-colors duration-200 mx-1"
+      class="delete-btn px-2 py-1 text-xs rounded-xl text-[#b47b6b] bg-transparent hover:bg-[#f19281]/30 dark:text-[#f8e9c9] dark:hover:bg-[#b47b6b]/30 transition-colors duration-200 mx-1 flex items-center justify-center"
       type="button"
       aria-label="Eliminar tarea"
     >
-      ❌
+      <i class="fas fa-trash"></i>
     </button>
   `;
 
@@ -466,14 +485,14 @@ function updateCounters(tasks) {
 
 /* ===== ACCIONES GLOBALES ===== */
 /**
- * Alterna el estado de todas las tareas (completadas / no completadas), actualizando
- * estado interno, UI y almacenamiento en localStorage.
+ * Alterna el estado de todas las tareas (completadas / pendientes),
+ * actualizando estado interno, UI y almacenamiento en localStorage.
  */
 function completeAllTasks() {
   if (!tasks.length) return;
 
-  // Si todas están completadas, las ponemos como pendientes; si no, las completamos todas
-  const allCompleted = tasks.length > 0 && tasks.every((task) => task.completed);
+  // Si todas están completadas, las marcamos como pendientes; si no, las completamos todas
+  const allCompleted = tasks.every((task) => task.completed);
   const newCompletedState = !allCompleted;
 
   tasks.forEach((task) => {
