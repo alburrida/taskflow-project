@@ -7,6 +7,9 @@ const taskList = document.getElementById("task-list");
 const searchInput = document.getElementById("search-input");
 const counter = document.getElementById("task-counter");
 const formError = document.getElementById("form-error");
+const pendingCounterEl = document.getElementById("counter-pending");
+const completedCounterEl = document.getElementById("counter-completed");
+const totalCounterEl = document.getElementById("counter-total");
 
 // ===== ESTADO DE LA APLICACIÓN =====
 let tasks = [];
@@ -117,21 +120,21 @@ function createTaskElement(task) {
   div.dataset.id = task.id;
 
   div.innerHTML = `
-    <p class="flex-1 font-medium text-gray-800 dark:text-gray-100 title">
+    <p class="flex-1 font-medium text-gray-800 dark:text-gray-100 title rounded-xl mx-2">
       ${task.text}
     </p>
 
-    <span class="px-2 py-1 text-xs rounded-full text-white transition-colors duration-200 ${
+    <span class="px-2 py-1 text-xs rounded-xl text-white transition-colors duration-200 mx-1 ${
       task.category === "trabajo"
         ? "bg-purple-400 hover:bg-purple-500 dark:bg-purple-600 dark:hover:bg-purple-500"
         : task.category === "hogar"
         ? "bg-pink-300 hover:bg-pink-400 dark:bg-pink-600 dark:hover:bg-pink-500"
-        : "bg-indigo-300 hover:bg-indigo-400 dark:bg-indigo-600 dark:hover:bg-indigo-500" // personal
+        : "bg-indigo-300 hover:bg-indigo-400 dark:bg-indigo-600 dark:hover:bg-indigo-500"
     }">
       ${capitalize(task.category)}
     </span>
 
-    <span class="px-2 py-1 text-xs rounded-full text-white transition-colors duration-200 ${
+    <span class="px-2 py-1 text-xs rounded-xl text-white transition-colors duration-200 mx-1 ${
       task.priority === "high"
         ? "bg-red-300 hover:bg-red-400 dark:bg-red-600 dark:hover:bg-red-500"
         : task.priority === "medium"
@@ -141,45 +144,220 @@ function createTaskElement(task) {
       ${priorityText(task.priority)}
     </span>
 
-    <button class="delete-btn text-sm hover:scale-110 transition-transform duration-200 ml-2">
+    <button
+      class="edit-btn px-2 py-1 text-xs rounded-xl text-white bg-blue-300 hover:bg-blue-400 dark:bg-blue-600 dark:hover:bg-blue-500 transition-colors duration-200 mx-1"
+      type="button"
+      aria-label="Editar tarea"
+    >
+      ✏️
+    </button>
+
+    <button
+      class="delete-btn px-2 py-1 text-xs rounded-xl text-white bg-red-300 hover:bg-red-400 dark:bg-red-600 dark:hover:bg-red-500 transition-colors duration-200 mx-1"
+      type="button"
+      aria-label="Eliminar tarea"
+    >
       ❌
     </button>
   `;
 
+  // Aplicar estado visual inicial según si la tarea está completada
+  updateTaskVisualState(task, div);
+
   return div;
+}
+
+/* ===== ACTUALIZAR ESTADO VISUAL DE LA TAREA ===== */
+function updateTaskVisualState(task, div) {
+  const isCompleted = task.completed;
+
+  div.classList.toggle("opacity-50", isCompleted);
+  div.classList.toggle("completed", isCompleted);
+
+  if (isCompleted) {
+    div.classList.add(
+      "bg-green-100",
+      "dark:bg-green-700",
+      "line-through",
+      "text-gray-500",
+    );
+  } else {
+    div.classList.remove(
+      "bg-green-100",
+      "dark:bg-green-700",
+      "line-through",
+      "text-gray-500",
+    );
+  }
+}
+
+/* ===== MODO EDICIÓN DE TAREA ===== */
+/**
+ * Activa el modo edición dentro de una tarjeta de tarea,
+ * permitiendo cambiar texto, categoría y prioridad.
+ *
+ * @param {{ id: number|string, text: string, category: string, priority: string, completed: boolean }} task
+ * @param {HTMLDivElement} div
+ */
+function enterEditMode(task, div) {
+  // Evitar entrar dos veces en modo edición
+  if (div.classList.contains("editing")) return;
+  div.classList.add("editing");
+
+  // Limpiar contenido actual
+  div.innerHTML = "";
+
+  // Campo de texto
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = task.text;
+  input.classList.add(
+    "flex-1",
+    "px-3",
+    "py-1",
+    "rounded-lg",
+    "border",
+    "border-gray-300",
+    "focus:ring-2",
+    "focus:ring-indigo-300",
+    "outline-none",
+  );
+
+  // Select de categoría
+  const categorySelectEdit = document.createElement("select");
+  categorySelectEdit.classList.add(
+    "px-2",
+    "py-1",
+    "rounded-lg",
+    "border",
+    "border-gray-300",
+  );
+
+  ["trabajo", "hogar", "personal"].forEach((value) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = capitalize(value);
+    if (value === task.category) option.selected = true;
+    categorySelectEdit.appendChild(option);
+  });
+
+  // Select de prioridad
+  const prioritySelectEdit = document.createElement("select");
+  prioritySelectEdit.classList.add(
+    "px-2",
+    "py-1",
+    "rounded-lg",
+    "border",
+    "border-gray-300",
+  );
+
+  [
+    { value: "high", label: "Alta" },
+    { value: "medium", label: "Media" },
+    { value: "low", label: "Baja" },
+  ].forEach(({ value, label }) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    if (value === task.priority) option.selected = true;
+    prioritySelectEdit.appendChild(option);
+  });
+
+  // Botón guardar
+  const saveBtn = document.createElement("button");
+  saveBtn.type = "button";
+  saveBtn.textContent = "Guardar";
+  saveBtn.classList.add(
+    "bg-green-500",
+    "text-white",
+    "px-3",
+    "py-1",
+    "rounded-lg",
+    "ml-2",
+    "text-sm",
+    "hover:bg-green-600",
+    "transition",
+  );
+
+  // Botón cancelar
+  const cancelBtn = document.createElement("button");
+  cancelBtn.type = "button";
+  cancelBtn.textContent = "Cancelar";
+  cancelBtn.classList.add(
+    "bg-gray-300",
+    "text-gray-800",
+    "px-3",
+    "py-1",
+    "rounded-lg",
+    "ml-2",
+    "text-sm",
+    "hover:bg-gray-400",
+    "transition",
+  );
+
+  // Montar modo edición
+  div.appendChild(input);
+  div.appendChild(categorySelectEdit);
+  div.appendChild(prioritySelectEdit);
+  div.appendChild(saveBtn);
+  div.appendChild(cancelBtn);
+
+  // Guardar cambios
+  saveBtn.addEventListener("click", () => {
+    const newText = input.value.trim();
+    if (newText.length < 3) {
+      // Reutilizamos la misma validación básica que el formulario principal
+      alert("La tarea debe tener al menos 3 caracteres.");
+      return;
+    }
+
+    task.text = newText;
+    task.category = categorySelectEdit.value;
+    task.priority = prioritySelectEdit.value;
+
+    saveTasks();
+    updateCounters(tasks);
+
+    // Re-renderizar la tarjeta completa con los nuevos datos
+    const newDiv = createTaskElement(task);
+    attachTaskListeners(task, newDiv);
+    taskList.replaceChild(newDiv, div);
+  });
+
+  // Cancelar edición
+  cancelBtn.addEventListener("click", () => {
+    const newDiv = createTaskElement(task);
+    attachTaskListeners(task, newDiv);
+    taskList.replaceChild(newDiv, div);
+  });
 }
 
 /* ===== AÑADIR LISTENERS A LA TAREA ===== */
 function attachTaskListeners(task, div) {
   const deleteBtn = div.querySelector(".delete-btn");
+  const editBtn = div.querySelector(".edit-btn");
 
   // Click en toda la tarjeta para marcar completada
   div.addEventListener("click", (e) => {
-    if (e.target === deleteBtn) return;
+    // No hacer nada si el click viene de los botones
+    if (e.target === deleteBtn || e.target === editBtn) return;
+    // Ni si la tarjeta está en modo edición
+    if (div.classList.contains("editing")) return;
 
     task.completed = !task.completed;
-    div.classList.toggle("opacity-50");
-    div.classList.toggle("completed");
-
-    if (task.completed) {
-      div.classList.add(
-        "bg-green-100",
-        "dark:bg-green-700",
-        "line-through",
-        "text-gray-500",
-      );
-    } else {
-      div.classList.remove(
-        "bg-green-100",
-        "dark:bg-green-700",
-        "line-through",
-        "text-gray-500",
-      );
-    }
+    updateTaskVisualState(task, div);
 
     saveTasks();
     updateCounters(tasks);
   });
+
+  // Editar tarea
+  if (editBtn) {
+    editBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      enterEditMode(task, div);
+    });
+  }
 
   // Borrar tarea
   deleteBtn.addEventListener("click", (e) => {
@@ -195,10 +373,19 @@ function attachTaskListeners(task, div) {
 }
 
 /* ===== RENDERIZAR TAREA ===== */
+/**
+ * Crea el elemento visual de una tarea, le añade listeners
+ * y lo inserta en la lista de tareas del DOM.
+ *
+ * @param {{ id: number|string, text: string, category: string, priority: string, completed: boolean }} task
+ *  Objeto de tarea a renderizar.
+ */
 function renderTask(task) {
-  const div = createTaskElement(task);
-  attachTaskListeners(task, div);
-  taskList.appendChild(div);
+  if (!taskList || !task) return;
+
+  const taskElement = createTaskElement(task);
+  attachTaskListeners(task, taskElement);
+  taskList.appendChild(taskElement);
 }
 
 /* ===== GUARDAR EN LOCALSTORAGE ===== */
@@ -249,27 +436,29 @@ function priorityText(priority) {
 }
 
 /* ===== CONTADOR REFACTORIZADO ===== */
-
 /**
- * Actualiza los contadores de tareas en la interfaz.
- * Muestra tareas pendientes, completadas y totales.
- * @param {Array} tasks - Array de tareas, cada una con propiedad `completed`
+ * Actualiza los contadores de tareas en la interfaz:
+ * pendientes, completadas y totales.
+ *
+ * @param {{ completed: boolean }[]} tasks - Lista de tareas.
  */
 function updateCounters(tasks) {
-  // Seleccionamos los elementos del DOM donde se mostrarán los contadores
-  const pendingEl = document.getElementById("counter-pending");
-  const completedEl = document.getElementById("counter-completed");
-  const totalEl = document.getElementById("counter-total");
+  if (!pendingCounterEl || !completedCounterEl || !totalCounterEl) return;
 
-  if (!pendingEl || !completedEl || !totalEl) return;
+  let pending = 0;
+  let completed = 0;
 
-  // Calculamos los valores
-  const pending = tasks.filter(t => !t.completed).length;
-  const completed = tasks.filter(t => t.completed).length;
-  const total = tasks.length;
+  for (const task of tasks) {
+    if (task.completed) {
+      completed += 1;
+    } else {
+      pending += 1;
+    }
+  }
 
-  // Actualizamos el DOM
-  pendingEl.textContent = `Pendientes: ${pending}`;
-  completedEl.textContent = `Completadas: ${completed}`;
-  totalEl.textContent = `Total: ${total}`;
+  const total = pending + completed;
+
+  pendingCounterEl.textContent = `Pendientes: ${pending}`;
+  completedCounterEl.textContent = `Completadas: ${completed}`;
+  totalCounterEl.textContent = `Total: ${total}`;
 }
