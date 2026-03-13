@@ -34,24 +34,25 @@
 <body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300 min-h-screen select-none">
 
   <!-- CONTENEDOR QUE CENTRA TODO -->
-  <div class="min-h-screen flex justify-center items-start p-6">
+  <div class="min-h-screen flex justify-center items-start px-4 py-6">
 
     <!-- CONTENEDOR DE LA APP -->
   
       <div class="flex flex-col gap-4 max-w-5xl mx-auto p-6">
 
         <!-- HEADER -->
-        <header class="relative flex justify-center items-center p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+        <header class="relative flex justify-center items-center p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl">
           <h1 class="text-3xl font-bold tracking-tight text-gray-800 dark:text-gray-100">
             Lista de Tareas
           </h1>
           <button
             id="theme-toggle"
-            class="absolute right-6 px-3 py-2 rounded-xl
-                  bg-[#eaad88] border border-[#b47b6b] text-white
-                  dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
-                  shadow-md hover:bg-[#b47b6b] dark:hover:bg-[#623229]
-                  hover:scale-105 transition-transform duration-200 flex items-center justify-center"
+            class="absolute right-3 md:right-6 px-2 py-2 md:px-3 rounded-xl
+            bg-[#eaad88] border border-[#b47b6b] text-white
+            dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
+            shadow-md hover:bg-[#b47b6b] dark:hover:bg-[#623229]
+            hover:scale-105 active:scale-90 transition-transform duration-200
+            flex items-center justify-center"
             aria-label="Cambiar tema"
           >
             <i class="fas fa-moon"></i>
@@ -59,14 +60,14 @@
         </header>
       
         <!-- BLOQUE CONTADOR + FORMULARIO + BUSCADOR + CATEGORÍAS -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 flex flex-row gap-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl p-6 flex flex-col md:flex-row gap-6">
 
           <!-- COLUMNA IZQUIERDA: Contadores con colores para modo claro y oscuro -->
-          <div class="flex flex-col gap-2 pr-4 border-r border-[#b47b6b] dark:border-[#623229] w-[30%]">
+          <div class="flex flex-col gap-2 md:pr-4 md:border-r border-[#b47b6b] dark:border-[#623229] w-full md:w-[30%]">
 
             <!-- Pendientes -->
             <div id="counter-pending"
-                class="px-3 py-1 rounded-xl w-full
+                class="px-3 py-1 rounded-xl w-full text-center
                        text-[#623229] bg-[#eaad88]
                        dark:bg-[#b47b6b] dark:text-[#f8e9c9]">
               Pendientes: 0
@@ -74,7 +75,7 @@
           
             <!-- Completadas -->
             <div id="counter-completed"
-                class="px-3 py-1 rounded-xl w-full
+                class="px-3 py-1 rounded-xl w-full text-center
                        text-[#623229] bg-[#f8e9c9]
                        dark:bg-[#623229] dark:text-[#f8e9c9]">
               Completadas: 0
@@ -82,7 +83,7 @@
           
             <!-- Totales -->
             <div id="counter-total"
-                class="px-3 py-1 rounded-xl w-full
+                class="px-3 py-1 rounded-xl w-full text-center
                        text-[#ffffff] bg-[#b47b6b]
                        dark:bg-[#623229] dark:text-[#ffffff]">
               Total: 0
@@ -134,15 +135,15 @@
               </form>
 
               <!-- Buscador -->
-              <input id="search-input" type="text" placeholder="Buscar tarea..." class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-300 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400">
+              <input id="search-input" type="text" placeholder="Buscar tarea..." class="w-full max-w-full px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-300 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400">
 
               <!-- Categorías -->
               
               <!-- Contenedor centrado -->
-              <div class="flex justify-center gap-4">
+              <div class="flex flex-wrap justify-center gap-3">
 
                 <button data-filter="all"
-                  class="category-btn flex-1 max-w-[150px] px-3 py-3 text-lg rounded-xl
+                  class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
                         bg-white border border-[#b47b6b] text-[#623229]
                         dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
                         shadow-md hover:bg-[#eaad88] dark:hover:bg-[#623229]
@@ -152,7 +153,7 @@
                 </button>
               
                 <button data-filter="trabajo"
-                  class="category-btn flex-1 max-w-[150px] px-3 py-3 text-lg rounded-xl
+                  class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
                         bg-white border border-[#ff893b] text-[#623229]
                         dark:bg-[#24231f] dark:border-[#ff893b] dark:text-[#f8e9c9]
                         shadow-md hover:bg-[#ff893b] hover:text-white
@@ -163,7 +164,7 @@
                 </button>
               
                 <button data-filter="hogar"
-                  class="category-btn flex-1 max-w-[150px] px-3 py-3 text-lg rounded-xl
+                  class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
                         bg-white border border-[#eaad88] text-[#623229]
                         dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
                         shadow-md hover:bg-[#eaad88]
@@ -174,7 +175,7 @@
                 </button>
               
                 <button data-filter="personal"
-                  class="category-btn flex-1 max-w-[150px] px-3 py-3 text-lg rounded-xl
+                  class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
                         bg-white border border-[#f19281] text-[#623229]
                         dark:bg-[#24231f] dark:border-[#f19281] dark:text-[#f8e9c9]
                         shadow-md hover:bg-[#f19281] hover:text-white
@@ -190,7 +191,7 @@
         </div>
 
         <!-- BLOQUE LISTA DE TAREAS -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 mt-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl p-6 mt-4">
           <section id="task-list" class="flex flex-col gap-3"></section>
         </div>
 
