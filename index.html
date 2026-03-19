@@ -13,208 +13,211 @@
   </script>
 
   <script>
-  const savedTheme = localStorage.getItem("theme");
+    const savedTheme = localStorage.getItem("theme");
 
-  if (savedTheme === "dark") {
-    document.documentElement.classList.add("dark");
-  }
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    }
   </script>
 
-
-<!--
-            _   _
-           (.)_(.)
-        _ (   _   ) _
-       / \/`-----'\/ \
-     __\ ( (     ) ) /__
-     )   /\ \._./ /\   (
-      )_/ /|\   /|\ \_(
--->
+  <!--
+              _   _
+             (.)_(.)
+          _ (   _   ) _
+         / \/`-----'\/ \
+       __\ ( (     ) ) /__
+       )   /\ \._./ /\   (
+        )_/ /|\   /|\ \_(
+  -->
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300 min-h-screen select-none">
 
-  <!-- CONTENEDOR QUE CENTRA TODO -->
   <div class="min-h-screen flex justify-center items-start px-4 py-6">
+    <div class="w-full max-w-5xl mx-auto flex flex-col gap-4 p-4 sm:p-6">
 
-    <!-- CONTENEDOR DE LA APP -->
-  
-      <div class="w-full max-w-5xl mx-auto flex flex-col gap-4 p-4 sm:p-6">
+      <!-- HEADER -->
+      <header class="relative flex justify-center items-center p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-800 dark:text-gray-100">
+          Lista de Tareas
+        </h1>
+        <button
+          id="theme-toggle"
+          class="absolute right-3 md:right-6 px-2 py-2 md:px-3 rounded-xl
+                 bg-[#eaad88] border border-[#b47b6b] text-white
+                 dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
+                 shadow-md hover:bg-[#b47b6b] dark:hover:bg-[#623229]
+                 hover:scale-105 active:scale-90 transition-transform duration-200
+                 flex items-center justify-center"
+          aria-label="Cambiar tema"
+        >
+          <i class="fas fa-moon"></i>
+        </button>
+      </header>
 
-        <!-- HEADER -->
-        <header class="relative flex justify-center items-center p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl">
-          <h1 class="text-3xl font-bold tracking-tight text-gray-800 dark:text-gray-100">
-            Lista de Tareas
-          </h1>
-          <button
-            id="theme-toggle"
-            class="absolute right-3 md:right-6 px-2 py-2 md:px-3 rounded-xl
-            bg-[#eaad88] border border-[#b47b6b] text-white
-            dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
-            shadow-md hover:bg-[#b47b6b] dark:hover:bg-[#623229]
-            hover:scale-105 active:scale-90 transition-transform duration-200
-            flex items-center justify-center"
-            aria-label="Cambiar tema"
+      <!-- BLOQUE CONTADOR + FORMULARIO + BUSCADOR + CATEGORÍAS -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl p-4 sm:p-6 flex flex-col lg:flex-row gap-4 w-full">
+
+        <!-- COLUMNA IZQUIERDA -->
+        <div class="flex flex-col gap-2 w-full lg:w-[30%] lg:pr-4 pb-4 lg:pb-0 border-b lg:border-b-0 lg:border-r border-[#b47b6b] dark:border-[#623229]">
+
+          <div
+            id="counter-pending"
+            class="px-3 py-1 rounded-xl w-full text-center text-[#623229] bg-[#eaad88] dark:bg-[#b47b6b] dark:text-[#f8e9c9]"
           >
-            <i class="fas fa-moon"></i>
+            Pendientes: 0
+          </div>
+
+          <div
+            id="counter-completed"
+            class="px-3 py-1 rounded-xl w-full text-center text-[#623229] bg-[#f8e9c9] dark:bg-[#623229] dark:text-[#f8e9c9]"
+          >
+            Completadas: 0
+          </div>
+
+          <div
+            id="counter-total"
+            class="px-3 py-1 rounded-xl w-full text-center text-white bg-[#b47b6b] dark:bg-[#623229] dark:text-white"
+          >
+            Total: 0
+          </div>
+
+          <button
+            id="complete-all-btn"
+            type="button"
+            class="px-3 py-2 rounded-xl w-full shadow-md hover:shadow-xl
+                   active:translate-y-1 active:shadow-inner
+                   transition-transform duration-150 hover:scale-105
+                   flex items-center justify-center
+                   text-white bg-[#ff893b] hover:bg-[#f19281]
+                   dark:bg-[#ff893b] dark:hover:bg-[#f19281]"
+          >
           </button>
-        </header>
-      
-        <!-- BLOQUE CONTADOR + FORMULARIO + BUSCADOR + CATEGORÍAS -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl p-6 flex flex-col md:flex-row gap-6">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 flex flex-col lg:flex-row gap-4 w-full">
+        </div>
 
-          <!-- COLUMNA IZQUIERDA: Contadores con colores para modo claro y oscuro -->
-          <div class="flex flex-col gap-2 md:pr-4 md:border-r border-[#b47b6b] dark:border-[#623229] w-full md:w-[30%]">
+        <!-- COLUMNA DERECHA -->
+        <div class="flex-1 flex flex-col gap-4 min-w-0 w-full">
+          <div class="flex flex-col gap-4 items-stretch">
 
-          <div class="flex flex-col gap-2 w-full lg:w-[30%] lg:pr-4 pb-4 lg:pb-0 border-b lg:border-b-0 lg:border-r border-[#b47b6b] dark:border-[#623229]">
-            <!-- Pendientes -->
-            <div id="counter-pending"
-                class="px-3 py-1 rounded-xl w-full text-center
-                class="px-3 py-1 rounded-xl w-full text-center
-                       text-[#623229] bg-[#eaad88]
-                       dark:bg-[#b47b6b] dark:text-[#f8e9c9]">
-              Pendientes: 0
-            </div>
-          
-            <!-- Completadas -->
-            <div id="counter-completed"
-                class="px-3 py-1 rounded-xl w-full text-center
-                class="px-3 py-1 rounded-xl w-full text-center
-                       text-[#623229] bg-[#f8e9c9]
-                       dark:bg-[#623229] dark:text-[#f8e9c9]">
-              Completadas: 0
-            </div>
-          
-            <!-- Totales -->
-            <div id="counter-total"
-                class="px-3 py-1 rounded-xl w-full text-center
-                class="px-3 py-1 rounded-xl w-full text-center
-                       text-[#ffffff] bg-[#b47b6b]
-                       dark:bg-[#623229] dark:text-[#ffffff]">
-              Total: 0
-            </div>
-          
-            <!-- Botón Completar todas -->
-            <button id="complete-all-btn" type="button"
-                class="px-3 py-1 rounded-xl w-full shadow-md hover:shadow-xl
-                       active:translate-y-1 active:shadow-inner
-                       transition-transform duration-150 hover:scale-105
-                       flex items-center justify-center
-                       text-white bg-[#ff893b] hover:bg-[#f19281]
-                       dark:bg-[#ff893b] dark:hover:bg-[#f19281]">
-          
-        
-          
-            </button>
-          
-          </div>
+            <!-- FORMULARIO -->
+            <form id="task-form" class="flex flex-col sm:flex-row gap-2 w-full relative">
+              <input
+                id="task-input"
+                type="text"
+                placeholder="Añadir nueva tarea..."
+                maxlength="15"
+                class="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-300 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400"
+                required
+              >
 
-          <!-- COLUMNA DERECHA: Formulario + Buscador + Categorías centrado verticalmente -->
-          <div class="flex-1 flex flex-col gap-4 min-w-0 w-full">
+              <select
+                id="task-category"
+                class="px-3 py-2 rounded-xl border border-gray-300 w-full sm:w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+              >
+                <option value="trabajo">Trabajo</option>
+                <option value="hogar">Hogar</option>
+                <option value="personal">Personal</option>
+              </select>
 
-            <!-- Contenedor centrado para formulario, buscador y categorías -->
-            <div class="flex flex-col gap-4 items-stretch">
-              <!-- Formulario -->
-              <form id="task-form" class="flex flex-col sm:flex-row gap-2 w-full relative">
-                <input id="task-input" type="text" placeholder="Añadir nueva tarea..." maxlength="15"
-                      class="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-300 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400" required>
-                <select id="task-category" class="px-3 py-2 rounded-xl border border-gray-300 w-full sm:w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
-                  <option value="trabajo">Trabajo</option>
-                  <option value="hogar">Hogar</option>
-                  <option value="personal">Personal</option>
-                </select>
-                <select id="task-priority" class="px-3 py-2 rounded-xl border border-gray-300 w-full sm:w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
-                  <option value="high">Alta</option>
-                  <option value="medium">Media</option>
-                  <option value="low">Baja</option>
-                </select>
-                <button
-                  class="bg-[#ff893b] hover:bg-[#f19281] text-white px-4 py-2 rounded-xl shadow-md hover:scale-105 transition-all duration-200">
-                  Añadir
-                </button>
+              <select
+                id="task-priority"
+                class="px-3 py-2 rounded-xl border border-gray-300 w-full sm:w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+              >
+                <option value="high">Alta</option>
+                <option value="medium">Media</option>
+                <option value="low">Baja</option>
+              </select>
 
-                <!-- Mensaje de error flotante -->
-                <p id="form-error" class="absolute left-1/2 transform -translate-x-1/2 -top-10 px-3 py-1 bg-red-500/80 text-white rounded-lg text-sm opacity-0 pointer-events-none transition-opacity duration-500 z-50">
-                  Error
-                </p>
-              </form>
+              <button
+                class="bg-[#ff893b] hover:bg-[#f19281] text-white px-4 py-2 rounded-xl shadow-md hover:scale-105 transition-all duration-200"
+              >
+                Añadir
+              </button>
 
-              <!-- Buscador -->
-              <input id="search-input" type="text" placeholder="Buscar tarea..." class="w-full max-w-full px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-300 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400">
+              <p
+                id="form-error"
+                class="absolute left-1/2 transform -translate-x-1/2 -top-10 px-3 py-1 bg-red-500/80 text-white rounded-lg text-sm opacity-0 pointer-events-none transition-opacity duration-500 z-50"
+              >
+                Error
+              </p>
+            </form>
 
-              <!-- Categorías -->
-              
-              <!-- Contenedor centrado -->
-              <div class="flex flex-wrap justify-center gap-3">
+            <!-- BUSCADOR -->
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Buscar tarea..."
+              class="w-full max-w-full px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-300 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400"
+            >
 
-              <div class="flex flex-wrap justify-center gap-2 sm:gap-4 w-full">
-                <button data-filter="all"
-                  class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
-                  class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
-                        bg-white border border-[#b47b6b] text-[#623229]
-                        dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
-                        shadow-md hover:bg-[#eaad88] dark:hover:bg-[#623229]
-                        hover:scale-105 transition-transform duration-200
-                        flex items-center justify-center gap-2">
-                  <i class="fas fa-list"></i> Todas
-                </button>
-              
-                <button data-filter="trabajo"
-                  class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
-                  class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
-                        bg-white border border-[#ff893b] text-[#623229]
-                        dark:bg-[#24231f] dark:border-[#ff893b] dark:text-[#f8e9c9]
-                        shadow-md hover:bg-[#ff893b] hover:text-white
-                        dark:hover:bg-[#ff893b] dark:hover:text-white
-                        hover:scale-105 transition-transform duration-200
-                        flex items-center justify-center gap-2">
-                  <i class="fas fa-briefcase"></i> Trabajo
-                </button>
-              
-                <button data-filter="hogar"
-                  class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
-                  class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
-                        bg-white border border-[#eaad88] text-[#623229]
-                        dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
-                        shadow-md hover:bg-[#eaad88]
-                        dark:hover:bg-[#623229]
-                        hover:scale-105 transition-transform duration-200
-                        flex items-center justify-center gap-2">
-                  <i class="fas fa-house"></i> Hogar
-                </button>
-              
-                <button data-filter="personal"
-                  class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
-                  class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
-                        bg-white border border-[#f19281] text-[#623229]
-                        dark:bg-[#24231f] dark:border-[#f19281] dark:text-[#f8e9c9]
-                        shadow-md hover:bg-[#f19281] hover:text-white
-                        dark:hover:bg-[#f19281] dark:hover:text-white
-                        hover:scale-105 transition-transform duration-200
-                        flex items-center justify-center gap-2">
-                  <i class="fas fa-user"></i> Personal
-                </button>
-              
-              </div>
+            <!-- CATEGORÍAS -->
+            <div class="flex flex-wrap justify-center gap-2 sm:gap-4 w-full">
+              <button
+                data-filter="all"
+                class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
+                       bg-white border border-[#b47b6b] text-[#623229]
+                       dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
+                       shadow-md hover:bg-[#eaad88] dark:hover:bg-[#623229]
+                       hover:scale-105 transition-transform duration-200
+                       flex items-center justify-center gap-2"
+              >
+                <i class="fas fa-list"></i> Todas
+              </button>
+
+              <button
+                data-filter="trabajo"
+                class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
+                       bg-white border border-[#ff893b] text-[#623229]
+                       dark:bg-[#24231f] dark:border-[#ff893b] dark:text-[#f8e9c9]
+                       shadow-md hover:bg-[#ff893b] hover:text-white
+                       dark:hover:bg-[#ff893b] dark:hover:text-white
+                       hover:scale-105 transition-transform duration-200
+                       flex items-center justify-center gap-2"
+              >
+                <i class="fas fa-briefcase"></i> Trabajo
+              </button>
+
+              <button
+                data-filter="hogar"
+                class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
+                       bg-white border border-[#eaad88] text-[#623229]
+                       dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
+                       shadow-md hover:bg-[#eaad88]
+                       dark:hover:bg-[#623229]
+                       hover:scale-105 transition-transform duration-200
+                       flex items-center justify-center gap-2"
+              >
+                <i class="fas fa-house"></i> Hogar
+              </button>
+
+              <button
+                data-filter="personal"
+                class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
+                       bg-white border border-[#f19281] text-[#623229]
+                       dark:bg-[#24231f] dark:border-[#f19281] dark:text-[#f8e9c9]
+                       shadow-md hover:bg-[#f19281] hover:text-white
+                       dark:hover:bg-[#f19281] dark:hover:text-white
+                       hover:scale-105 transition-transform duration-200
+                       flex items-center justify-center gap-2"
+              >
+                <i class="fas fa-user"></i> Personal
+              </button>
             </div>
           </div>
         </div>
-        
+      </div>
 
-        <!-- BLOQUE LISTA DE TAREAS -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl p-6 mt-4">
-          <section id="task-list" class="flex flex-col gap-3"></section>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 mt-4 w-full min-w-0">
-          <section id="task-list" class="flex flex-col gap-3 w-full min-w-0"></section>
-        </div>
+      <!-- MENSAJE DE RED -->
+      <p id="network-status" class="text-sm px-3 py-2 rounded-xl hidden"></p>
 
-  <!--Bloque de mesaje, ya despu'es le pongo estilo-->
-        <p id="network-status" class="text-sm px-3 py-2 rounded-xl hidden"></p>
+      <!-- LISTA DE TAREAS -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl p-4 sm:p-6 mt-4 w-full min-w-0">
+        <section id="task-list" class="flex flex-col gap-3 w-full min-w-0"></section>
+      </div>
 
-  <!-- JS -->
+    </div>
+  </div>
+
   <script src="src/api/client.js"></script>
-  
   <script src="app.js"></script>
-  
 </body>
 </html>
