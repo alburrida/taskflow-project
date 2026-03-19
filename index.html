@@ -38,7 +38,7 @@
 
     <!-- CONTENEDOR DE LA APP -->
   
-      <div class="flex flex-col gap-4 max-w-5xl mx-auto p-6">
+      <div class="w-full max-w-5xl mx-auto flex flex-col gap-4 p-4 sm:p-6">
 
         <!-- HEADER -->
         <header class="relative flex justify-center items-center p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl">
@@ -61,12 +61,15 @@
       
         <!-- BLOQUE CONTADOR + FORMULARIO + BUSCADOR + CATEGORÍAS -->
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl p-6 flex flex-col md:flex-row gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 flex flex-col lg:flex-row gap-4 w-full">
 
           <!-- COLUMNA IZQUIERDA: Contadores con colores para modo claro y oscuro -->
           <div class="flex flex-col gap-2 md:pr-4 md:border-r border-[#b47b6b] dark:border-[#623229] w-full md:w-[30%]">
 
+          <div class="flex flex-col gap-2 w-full lg:w-[30%] lg:pr-4 pb-4 lg:pb-0 border-b lg:border-b-0 lg:border-r border-[#b47b6b] dark:border-[#623229]">
             <!-- Pendientes -->
             <div id="counter-pending"
+                class="px-3 py-1 rounded-xl w-full text-center
                 class="px-3 py-1 rounded-xl w-full text-center
                        text-[#623229] bg-[#eaad88]
                        dark:bg-[#b47b6b] dark:text-[#f8e9c9]">
@@ -76,6 +79,7 @@
             <!-- Completadas -->
             <div id="counter-completed"
                 class="px-3 py-1 rounded-xl w-full text-center
+                class="px-3 py-1 rounded-xl w-full text-center
                        text-[#623229] bg-[#f8e9c9]
                        dark:bg-[#623229] dark:text-[#f8e9c9]">
               Completadas: 0
@@ -83,6 +87,7 @@
           
             <!-- Totales -->
             <div id="counter-total"
+                class="px-3 py-1 rounded-xl w-full text-center
                 class="px-3 py-1 rounded-xl w-full text-center
                        text-[#ffffff] bg-[#b47b6b]
                        dark:bg-[#623229] dark:text-[#ffffff]">
@@ -98,14 +103,14 @@
                        text-white bg-[#ff893b] hover:bg-[#f19281]
                        dark:bg-[#ff893b] dark:hover:bg-[#f19281]">
           
-                <i class="fas fa-check-double"></i>
+        
           
             </button>
           
           </div>
 
           <!-- COLUMNA DERECHA: Formulario + Buscador + Categorías centrado verticalmente -->
-          <div class="flex-1 flex flex-col gap-4">
+          <div class="flex-1 flex flex-col gap-4 min-w-0 w-full">
 
             <!-- Contenedor centrado para formulario, buscador y categorías -->
             <div class="flex flex-col gap-4 items-stretch">
@@ -142,8 +147,10 @@
               <!-- Contenedor centrado -->
               <div class="flex flex-wrap justify-center gap-3">
 
+              <div class="flex flex-wrap justify-center gap-2 sm:gap-4 w-full">
                 <button data-filter="all"
                   class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
+                  class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
                         bg-white border border-[#b47b6b] text-[#623229]
                         dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
                         shadow-md hover:bg-[#eaad88] dark:hover:bg-[#623229]
@@ -154,6 +161,7 @@
               
                 <button data-filter="trabajo"
                   class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
+                  class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
                         bg-white border border-[#ff893b] text-[#623229]
                         dark:bg-[#24231f] dark:border-[#ff893b] dark:text-[#f8e9c9]
                         shadow-md hover:bg-[#ff893b] hover:text-white
@@ -165,6 +173,7 @@
               
                 <button data-filter="hogar"
                   class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
+                  class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
                         bg-white border border-[#eaad88] text-[#623229]
                         dark:bg-[#24231f] dark:border-[#eaad88] dark:text-[#f8e9c9]
                         shadow-md hover:bg-[#eaad88]
@@ -176,6 +185,7 @@
               
                 <button data-filter="personal"
                   class="category-btn flex-1 max-w-[150px] px-3 py-2 text-sm md:text-lg rounded-xl
+                  class="category-btn w-full sm:w-[calc(50%-0.5rem)] lg:flex-1 lg:max-w-[150px] px-3 py-3 text-base sm:text-lg rounded-xl
                         bg-white border border-[#f19281] text-[#623229]
                         dark:bg-[#24231f] dark:border-[#f19281] dark:text-[#f8e9c9]
                         shadow-md hover:bg-[#f19281] hover:text-white
@@ -189,23 +199,22 @@
             </div>
           </div>
         </div>
+        
 
         <!-- BLOQUE LISTA DE TAREAS -->
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl p-6 mt-4">
           <section id="task-list" class="flex flex-col gap-3"></section>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 mt-4 w-full min-w-0">
+          <section id="task-list" class="flex flex-col gap-3 w-full min-w-0"></section>
         </div>
 
-  
+  <!--Bloque de mesaje, ya despu'es le pongo estilo-->
+        <p id="network-status" class="text-sm px-3 py-2 rounded-xl hidden"></p>
 
   <!-- JS -->
+  <script src="src/api/client.js"></script>
+  
   <script src="app.js"></script>
-  <script>
-    // Toggle dark mode
-    const themeToggle = document.getElementById("theme-toggle");
-    themeToggle.addEventListener("click", () => {
-      document.documentElement.classList.toggle("dark");
-    });
-  </script>
-
+  
 </body>
 </html>

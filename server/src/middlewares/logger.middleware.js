@@ -1,0 +1,12 @@
+const loggerAcademico = (req, res, next) => {
+  const inicio = Date.now();
+
+  res.on('finish', () => {
+    const duracion = Date.now() - inicio;
+    console.log(`[${req.method}] ${req.originalUrl} - Estado: ${res.statusCode} (${duracion}ms)`);
+  });
+
+  next();
+};
+
+module.exports = loggerAcademico;

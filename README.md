@@ -1,47 +1,212 @@
 # TaskFlow
 
-Aplicación web para gestionar tareas de manera local, con interfaz moderna, modo oscuro y un sistema de diseño profesional basado en **Tailwind CSS**.
+TaskFlow es una aplicación web de gestión de tareas con frontend en HTML, JavaScript y Tailwind CSS, y backend en Node.js con Express. Permite crear, editar, eliminar, completar y filtrar tareas mediante una API REST propia.
 
 ---
 
-# Funcionalidades
+## Funcionalidades
 
-- Añadir nuevas tareas con **categoría** y **prioridad**.
-- **Editar tareas existentes** mediante un botón de edición.
-- Marcar tareas como **completadas** haciendo click en la tarjeta.
-- Borrar tareas individualmente.
-- Filtrar tareas por categoría con botones estilo **chips**.
-- Buscar tareas por texto en tiempo real.
-- **Contadores de tareas** (pendientes, completadas y totales).
-- Persistencia en **LocalStorage**: las tareas permanecen al recargar la página.
-- **Modo oscuro** activable mediante un botón en el header.
-- Interfaz **responsive** y accesible.
+### Frontend
+- Crear tareas con título, categoría y prioridad
+- Editar tareas existentes
+- Marcar tareas como completadas o pendientes
+- Eliminar tareas individualmente
+- Completar o desmarcar todas las tareas
+- Filtrar por categoría
+- Buscar tareas por texto en tiempo real
+- Mostrar contadores de tareas pendientes, completadas y totales
+- Cambiar entre modo claro y modo oscuro
+- Mostrar estados de red: carga, éxito y error
+- Diseño responsive adaptado a móvil y escritorio
 
----
-
-# Cómo usarlo
-
-1. Escribe la tarea en el formulario.
-2. Selecciona **categoría** y **prioridad**.
-3. Pulsa **Añadir** para crear la tarea.
-4. Haz click en una tarea para marcarla como **completada**.
-5. Pulsa el botón **✏️** para **editar una tarea existente**.
-6. Pulsa el botón **❌** para **eliminar** una tarea.
-7. Usa el buscador para **filtrar tareas por texto**.
-8. Filtra tareas por categoría usando los **chips de categoría**.
-9. Pulsa el botón **🌙 / ☀️** para cambiar entre **modo claro y oscuro**.
+### Backend
+- API RESTful para gestionar tareas
+- Arquitectura por capas
+- Validación manual de datos
+- Middleware de parseo JSON
+- Middleware CORS
+- Middleware personalizado de logging
+- Middleware global de manejo de errores
+- Variables de entorno con dotenv
 
 ---
 
-# Tecnologías
+## Tecnologías utilizadas
 
-- **HTML5**
-- **JavaScript**
-  - Manipulación del DOM
-  - LocalStorage
-- **Tailwind CSS** para estilos, layout y modo oscuro
+### Frontend
+- HTML5
+- JavaScript Vanilla
+- Tailwind CSS
+- Fetch API
+
+### Backend
+- Node.js
+- Express
+- cors
+- dotenv
+- nodemon
+
+### Pruebas
+- Thunder Client
 
 ---
+
+## Estructura del proyecto
+
+taskflow-project/
+├── index.html
+├── app.js
+├── src/
+│   └── api/
+│       └── client.js
+├── docs/
+│   └── backend-api.md
+├── server/
+│   ├── .env
+│   ├── .gitignore
+│   ├── package.json
+│   └── src/
+│       ├── config/
+│       │   └── env.js
+│       ├── controllers/
+│       │   └── task.controller.js
+│       ├── middlewares/
+│       │   └── logger.middleware.js
+│       ├── routes/
+│       │   └── task.routes.js
+│       ├── services/
+│       │   └── task.service.js
+│       └── index.js
+└── README.md
+
+# Arquitectura Backend
+
+El backend se ha organizado siguiendo una arquitectura por capas para separar responsabilidades y facilitar el mantenimiento del código.
+
+## Routes
+
+La capa de rutas conecta cada endpoint HTTP con su controlador correspondiente. No contiene lógica de negocio.
+
+## Controllers
+
+Los controladores reciben la petición HTTP, extraen parámetros y datos del body, validan la entrada y llaman a la capa de servicios. Después, construyen la respuesta HTTP.
+
+## Services
+
+La capa de servicios contiene la lógica de negocio de la aplicación. En esta práctica, las tareas se almacenan en memoria mediante un array, simulando persistencia temporal.
+
+## Config
+
+La configuración del entorno se gestiona en un módulo independiente que carga variables con dotenv y valida que existan antes de arrancar el servidor.
+
+## Middlewares
+
+Los middlewares permiten interceptar y procesar peticiones y respuestas antes de llegar a la lógica principal.
+
+## Middlewares utilizados
+
+**express.json()**
+
+Convierte el cuerpo de las peticiones JSON en un objeto JavaScript accesible desde req.body.
+
+**cors()**
+
+Permite la comunicación entre el frontend y el backend aunque se ejecuten en orígenes distintos.
+
+**loggerAcademico**
+
+Middleware personalizado que registra en consola:
+
+- método HTTP
+
+- ruta
+
+- código de estado
+
+- duración de la petición
+
+## Middleware global de errores
+
+Captura errores no controlados. Si el error es **NOT_FOUND**, devuelve un **404**. Para cualquier otro error devuelve un **500**.
+
+## Validaciones implementadas
+
+El backend rechaza peticiones inválidas con `400 Bad Request` si:
+
+- `text` no existe
+- `text` tiene menos de 3 caracteres
+- `text` supera los 100 caracteres
+- `category` no es `trabajo`, `hogar` o `personal`
+- `priority` no es `high`, `medium` o `low`
+- `completed` no es booleano cuando corresponde
+
+## Manejo de errores
+
+- Si una tarea no existe, el servicio lanza `Error('NOT_FOUND')`.
+- El middleware global transforma ese error en `404 Not Found`.
+- Los errores no controlados devuelven `500 Internal Server Error`.
+
+## Cómo ejecutar el proyecto
+
+### 1. Backend
+
+Entra en `server/` e instala dependencias:
+
+```bash
+cd server
+npm install
+```
+
+Crea el archivo `.env` tomando como referencia `.env.example`:
+
+```env
+PORT=3000
+```
+
+Arranca el backend en desarrollo:
+
+```bash
+npm run dev
+```
+
+### 2. Frontend
+
+Abre el frontend con una extensión tipo **Live Server** o cualquier servidor estático.
+
+Ejemplo con VS Code:
+- abrir `index.html`
+- lanzar **Open with Live Server**
+
+El frontend llamará al backend local en:
+
+```text
+http://localhost:3000/api/v1
+```
+
+## Cambios en el frontend
+
+Antes:
+- las tareas se guardaban en `localStorage`
+- toda la lógica era local al navegador
+
+Ahora:
+- las tareas se piden al backend con `fetch`
+- las operaciones crear, editar, borrar y completar son llamadas HTTP
+- la UI muestra feedback de carga, éxito y error
+
+## Pruebas recomendadas con Postman o Thunder Client
+
+### Caso correcto
+- `GET /api/v1/tasks`
+- `POST /api/v1/tasks` con body válido
+- `DELETE /api/v1/tasks/:id` de una tarea existente
+
+### Casos de error
+- `POST /api/v1/tasks` sin `text`
+- `POST /api/v1/tasks` con `category: "estudios"`
+- `PATCH /api/v1/tasks/complete-all` con `completed: "si"`
+- `DELETE /api/v1/tasks/:id` con un ID inexistente
+
 
 # Interfaz
 
@@ -80,7 +245,7 @@ Estos contadores se actualizan automáticamente cada vez que se:
 
 Se han añadido validaciones para mejorar la experiencia de usuario:
 
-- La tarea debe tener **entre 3 y 100 caracteres**
+- La tarea debe tener **entre 3 y 15 caracteres**
 - Si no cumple los requisitos, se muestra **un mensaje de error dentro de la interfaz**
 - Se evita el uso de **alertas del navegador**, manteniendo la experiencia visual dentro de la aplicación
 
@@ -109,14 +274,19 @@ Durante el desarrollo se han realizado varias mejoras con ayuda de **IA (Cursor 
 - Uso de **JSDoc** para documentar funciones
 - Mejoras de **UX en modo oscuro**
 
-Las herramientas de IA se utilizaron principalmente para:
+Durante el desarrollo se han utilizado herramientas de IA como apoyo para:
 
 - refactorizar funciones
+
 - mejorar la organización del código
-- generar documentación técnica
+
+- detectar errores
+
 - proponer mejoras de interfaz
 
-Todos los cambios generados por IA fueron **revisados manualmente antes de ser aceptados**.
+- ayudar en la redacción de documentación técnica
+
+Todos los cambios sugeridos fueron **revisados manualmente antes de incorporarlos al proyecto**.
 
 ---
 
