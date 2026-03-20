@@ -1,4 +1,7 @@
-const API_BASE_URL = "http://localhost:3000/api/v1/tasks";
+const API_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000/api/v1/tasks"
+    : "/api/v1/tasks";
 
 async function handleResponse(response) {
   if (response.status === 204) {
