@@ -17,39 +17,103 @@ let tasks = [];
 
 // funciones auxiliares
 
-function showLoading(message = "Cargando...") {
+let statusTimeoutId = null;
+
+function setStatus(message, type = "loading", autoHide = false, delay = 1800) {
   if (!networkStatus) return;
+
+  if (statusTimeoutId) {
+    clearTimeout(statusTimeoutId);
+    statusTimeoutId = null;
+  }
+
+  const baseClasses = [
+    "fixed",
+    "top-4",
+    "right-4",
+    "z-50",
+    "w-[calc(100%-2rem)]",
+    "sm:w-auto",
+    "max-w-sm",
+    "px-4",
+    "py-3",
+    "rounded-xl",
+    "shadow-xl",
+    "backdrop-blur-sm",
+    "pointer-events-none",
+    "transition-all",
+    "duration-300"
+  ];
+
+  const typeClasses = {
+    loading: [
+      "bg-yellow-100/95",
+      "text-yellow-800",
+      "dark:bg-yellow-900/90",
+      "dark:text-yellow-100",
+      "border",
+      "border-yellow-300",
+      "dark:border-yellow-700"
+    ],
+    error: [
+      "bg-red-100/95",
+      "text-red-700",
+      "dark:bg-red-900/90",
+      "dark:text-red-100",
+      "border",
+      "border-red-300",
+      "dark:border-red-700"
+    ],
+    success: [
+      "bg-green-100/95",
+      "text-green-700",
+      "dark:bg-green-900/90",
+      "dark:text-green-100",
+      "border",
+      "border-green-300",
+      "dark:border-green-700"
+    ]
+  };
+
   networkStatus.textContent = message;
-  networkStatus.className = "text-sm px-3 py-2 rounded-xl bg-yellow-100 text-yellow-800 block";
+  networkStatus.className = [
+    ...baseClasses,
+    ...(typeClasses[type] || typeClasses.loading),
+    "opacity-100",
+    "translate-y-0"
+  ].join(" ");
+
+  networkStatus.classList.remove("hidden");
+
+  if (autoHide) {
+    statusTimeoutId = setTimeout(() => {
+      hideStatus();
+    }, delay);
+  }
+}
+
+function showLoading(message = "Cargando...") {
+  setStatus(message, "loading", false);
 }
 
 function showError(message) {
-  if (!networkStatus) return;
-  networkStatus.textContent = message;
-  networkStatus.className = "text-sm px-3 py-2 rounded-xl bg-red-100 text-red-700 block";
+  setStatus(message, "error", true, 2600);
+}
+
+function showSuccess(message = "Operación realizada correctamente") {
+  setStatus(message, "success", true, 1600);
 }
 
 function hideStatus() {
   if (!networkStatus) return;
-  networkStatus.textContent = "";
-  networkStatus.className = "text-sm px-3 py-2 rounded-xl hidden";
-}
 
-async function loadTasksFromApi() {
-  try {
-    showLoading("Cargando tareas...");
+  networkStatus.classList.remove("opacity-100", "translate-y-0");
+  networkStatus.classList.add("opacity-0", "-translate-y-2");
 
-    tasks = await window.taskApi.getTasks();
-    renderTasks(tasks);
-    updateCounters(tasks);
-    applyCurrentFilters();
-    updateCompleteAllButtonText();
-
-    hideStatus();
-  } catch (error) {
-    console.error(error);
-    showError(error.message || "No se pudieron cargar las tareas");
-  }
+  setTimeout(() => {
+    networkStatus.classList.add("hidden");
+    networkStatus.textContent = "";
+  }, 300);
 }
 
 function renderTasks(taskArray) {
@@ -292,6 +356,7 @@ function enterEditMode(task, div) {
   div.innerHTML = "";
   div.className = [
     "task",
+    "editing",
     "flex",
     "flex-col",
     "gap-3",
@@ -661,14 +726,4 @@ async function completeAllTasks() {
 
 if (completeAllBtn) {
   completeAllBtn.addEventListener("click", completeAllTasks);
-}
-
-function showSuccess(message = "Operación realizada correctamente") {
-  if (!networkStatus) return;
-  networkStatus.textContent = message;
-  networkStatus.className = "text-sm px-3 py-2 rounded-xl bg-green-100 text-green-700 block";
-
-  setTimeout(() => {
-    hideStatus();
-  }, 1500);
 }
