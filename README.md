@@ -51,34 +51,6 @@ TaskFlow es una aplicación web de gestión de tareas con frontend en HTML, Java
 
 ---
 
-## Estructura del proyecto
-
-taskflow-project/
-├── index.html
-├── app.js
-├── src/
-│   └── api/
-│       └── client.js
-├── docs/
-│   └── backend-api.md
-├── server/
-│   ├── .env
-│   ├── .gitignore
-│   ├── package.json
-│   └── src/
-│       ├── config/
-│       │   └── env.js
-│       ├── controllers/
-│       │   └── task.controller.js
-│       ├── middlewares/
-│       │   └── logger.middleware.js
-│       ├── routes/
-│       │   └── task.routes.js
-│       ├── services/
-│       │   └── task.service.js
-│       └── index.js
-└── README.md
-
 # Arquitectura Backend
 
 El backend se ha organizado siguiendo una arquitectura por capas para separar responsabilidades y facilitar el mantenimiento del código.
@@ -302,3 +274,5 @@ Mejoras que se esperan añadir en un futuro:
 - Elecciónn entre varios temas disponibles
 - Descripción para cada tarea
 - Compatibilidad para exportar tareas a google calendar
+
+Documentación técnica del backend: [docs/server-technical-documentation.md](docs/server-technical-documentation.md)
